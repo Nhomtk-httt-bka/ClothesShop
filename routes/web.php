@@ -12,17 +12,26 @@
 */
 
 Route::get('/', function () {
-    return '<h1>Hello Laravel</h1>';
+    return view('users/home');
 });
 
+Route::resource('admins', 'AdminController');
 Route::prefix('admin')->group(function(){
-	Route::get('dashboard', 'AdminController@showDaskboard');
-	Route::get('register', 'AdminController@showRegister');
+	Route::middleware('admin_auth')->group(function(){
+		Route::get('dashboard', 'AdminController@showDashboard');
+	});
+	Route::post('login','AdminController@checkAuth');
 	Route::get('forgotPass', 'AdminController@showForgot');
-	Route::get('login','AdminController@showLogin');
-	Route::post('login','AdminController@showDaskboard');
+	Route::get('logout',function(){
+		Auth::logout();
+    	return redirect('admins/');
+	});
 });
 
+Route::middleware('admin_auth')->group(function(){
+	Route::resource('categories','CategoryController');
+	Route::resource('products','ProductController');
+});
 
 Route::get('home','UserController@showHome');
 Route::get('login','UserController@showLogin');
