@@ -3,38 +3,10 @@
 namespace App\Http\Controllers;
 use App\models\Products;
 use App\models\Category;
-
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreUserPost;
 
-
-class UserController extends Controller
+class ProductController extends Controller
 {
-    public function showHome(){
-        $products = Products::all('product_name','product_price','product_rate','product_image');
-        $categories = Category::all('category_name');
-        return view('users/home',['products'=> $products, 'categories' => $categories]);
-    }
-
-    public function showLogin(){
-        return view('users/login');
-    }
-    public function doLogout(){
-        Auth::logout();
-        return redirect('home');
-    }
-    protected function checkAuth(Request $request){
-        $credential=[
-            'email'=>$request->email,
-            'password'=>$request->password,
-        ];
-        if(Auth::attempt($credential)){
-            return redirect('home');
-        }else{
-            return redirect('login')->withInput();
-        }
-         
-    }
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $products = Products::all();
+        $categories = Category::all('id','category_name');
+        return view('admins.products',['products'=> $products, 'categories' => $categories]);
     }
 
     /**
@@ -52,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users/register');
+        //
     }
 
     /**
@@ -61,18 +35,29 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserPost $request)
+    public function store(Request $request)
     {
-        // echo $request;
-
-        $validated = $request->validated();
-
-        User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
+        request()->validate([
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        return redirect('home');
+        if ($request->file('logo')) {
+            $imageName = request()->logo->getClientOriginalName() .'-'. time().'.'. request()->logo->getClientOriginalExtension();
+            request()->logo->move(public_path('img/products'), $imageName);
+            Products::create([
+                'product_name' => $request->product_name,
+                'product_description' => $request->product_description,
+                'product_url' => $request->product_url,
+                'category_id' => $request->category_id,
+                'product_quantity' => $request->product_quantity,
+                'product_price' => $request->product_price,
+                'product_condition' => $request->product_condition,
+                'product_keyword' => $request->product_keyword,
+                'product_content' => $request->product_content,
+                'product_image' => $imageName,
+                
+            ]);
+        }
+        return redirect('products')->with('success', 'Page created successfully.');
     }
 
     /**

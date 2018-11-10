@@ -1,8 +1,20 @@
 <ul class="sidebar navbar-nav">
-  <li class="nav-item active">
-    <a class="nav-link" href="index.html">
+  <li class="nav-item {{ Request::is('admin/dashboard') ? 'active' : ''}}">
+    <a class="nav-link" href="{{ url('admin/dashboard') }}">
       <i class="fas fa-fw fa-tachometer-alt"></i>
       <span>Dashboard</span>
+    </a>
+  </li>
+  <li class="nav-item {{ Request::is('categories') ? 'active' : ''}}">
+    <a class="nav-link" href="{{ url('categories') }}">
+      <i class="fa fa-tasks"></i>
+      <span>Categories</span>
+    </a>
+  </li>
+  <li class="nav-item {{ Request::is('products') ? 'active' : ''}}">
+    <a class="nav-link" href="{{ url('products') }}">
+      <i class="fas fa-book"></i>
+      <span>Product</span>
     </a>
   </li>
   <li class="nav-item dropdown">

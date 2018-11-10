@@ -18,12 +18,19 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/modern-business.css') }}" rel="stylesheet">
-
+  
   </head>
     
   <body>
-    @include('component.navbar_user')
+    <!-- Core plugin JavaScript-->
+    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    @include('component.navbar_user')
+    <div style="margin: 1px;"></div>
     @if(Request::is('home'))
       @include('component.slide_show')
     @endif
@@ -35,6 +42,6 @@
     
 </html>
 
-<!-- Bootstrap core JavaScript -->
-<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+
+

@@ -23,10 +23,7 @@
   </head>
 
   <body class="bg-dark">
-
-    <div class="container">
-      @yield('content')
-    </div>
+    
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
@@ -34,7 +31,14 @@
 
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    
+    <div class="container">
+      @yield('content')
+    </div>
 
+    
+    
+    
   </body>
 
 </html>

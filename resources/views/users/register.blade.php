@@ -23,7 +23,7 @@
           <h3 class="panel-title">Complete this form in quick 3 steps!  <a  href="{{ url('home') }}" class="btn btn-primary float-right">Home</a></h3>
         </div>
         <div class="card-body">
-          <form name="basicform" id="basicform" method="post" action="{{ route('register') }}">
+          <form name="basicform" id="basicform" method="post" action="{{ url('users') }}">
             @csrf
             @if ($errors->any())
                 <div class="alert alert-danger">

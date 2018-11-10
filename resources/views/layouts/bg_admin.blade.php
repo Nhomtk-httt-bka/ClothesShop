@@ -26,6 +26,13 @@
   </head>
 
   <body id="page-top">
+    
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    
+
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
@@ -101,15 +108,11 @@
           <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="{{url('admin/login')}}">Logout</a>
+            <a class="btn btn-primary" href="{{url('admin/logout')}}">Logout</a>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
@@ -125,7 +128,6 @@
     <!-- Demo scripts for this page-->
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
     <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
-
   </body>
 
 </html>

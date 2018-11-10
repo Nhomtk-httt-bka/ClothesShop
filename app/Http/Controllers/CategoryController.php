@@ -1,40 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\models\Products;
 use App\models\Category;
-
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreUserPost;
+use Illuminate\Support\Facades\DB;
 
-
-class UserController extends Controller
+class CategoryController extends Controller
 {
-    public function showHome(){
-        $products = Products::all('product_name','product_price','product_rate','product_image');
-        $categories = Category::all('category_name');
-        return view('users/home',['products'=> $products, 'categories' => $categories]);
-    }
-
-    public function showLogin(){
-        return view('users/login');
-    }
-    public function doLogout(){
-        Auth::logout();
-        return redirect('home');
-    }
-    protected function checkAuth(Request $request){
-        $credential=[
-            'email'=>$request->email,
-            'password'=>$request->password,
-        ];
-        if(Auth::attempt($credential)){
-            return redirect('home');
-        }else{
-            return redirect('login')->withInput();
-        }
-         
-    }
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        
+        return view('admins/categories',['categories'=>$categories]);
     }
 
     /**
@@ -52,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users/register');
+        
     }
 
     /**
@@ -61,18 +35,14 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserPost $request)
+    public function store(Request $request)
     {
-        // echo $request;
-
-        $validated = $request->validated();
-
-        User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
+        Category::create([
+            'category_name' => $request->category_name,
+            'category_description' => $request->category_description,
+            'category_url' => $request->category_url,
         ]);
-        return redirect('home');
+        return redirect('categories');
     }
 
     /**
@@ -83,7 +53,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        print("hello world");
     }
 
     /**
@@ -94,7 +64,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        return view('admins.category_update',['category' => $category]);
     }
 
     /**
@@ -106,7 +77,16 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $category = Category::find($id);
+        
+        $category->category_name = $request->category_name;
+        $category->category_description = $request->category_description;
+        $category->category_url = $request->category_url;
+        
+        $category->save();
+        
+        return redirect('categories');
     }
 
     /**
@@ -117,6 +97,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Category::destroy($id);
+        return redirect('categories');
     }
 }
