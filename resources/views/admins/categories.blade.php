@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="card-footer text-right">
-          <button type="submit" class="btn btn-success" style="font-size: 30px">   <i class="fas fa-save"></i></button>
+          <button type="submit" class="btn btn-success" style="font-size: 30px">   <i class="fas fa-save"> Save</i></button>
         </div>
       </form>
     </div>

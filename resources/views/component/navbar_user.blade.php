@@ -1,7 +1,7 @@
 <!-- Navigation -->
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="#">Home Page</a>
+        <a class="navbar-brand" href="{{ url('home') }}">Home Page</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -15,13 +15,13 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Portfolio
+                <i class="fa fa-id-card"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
-                <a class="dropdown-item" href="portfolio-1-col.html">1 Column Portfolio</a>
-                <a class="dropdown-item" href="portfolio-2-col.html">2 Column Portfolio</a>
-                <a class="dropdown-item" href="portfolio-3-col.html">3 Column Portfolio</a>
-                <a class="dropdown-item" href="portfolio-4-col.html">4 Column Portfolio</a>
+                <a class="dropdown-item" href="{{ url('profile') }}">Profile</a>
+                <a class="dropdown-item" href="portfolio-2-col.html">Cards</a>
+                <a class="dropdown-item" href="portfolio-3-col.html">1 Column Portfolio</a>
+                <a class="dropdown-item" href="portfolio-4-col.html">2 Column Portfolio</a>
                 <a class="dropdown-item" href="portfolio-item.html">Single Portfolio Item</a>
               </div>
             </li>
@@ -55,7 +55,7 @@
                 <a class="nav-link" href="{{ url('login') }}"><i class="fa fa-user"></i> Sign in</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url('register') }}"><i class="fa fa-user-plus"></i> sign up</a>
+                <a class="nav-link" href="{{ url('users/create') }}"><i class="fa fa-user-plus"></i> sign up</a>
               </li>
             @endguest
           </ul>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\models\Products;
+use App\models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,7 +15,8 @@ class ProductController extends Controller
     public function index()
     {
         $products = Products::all();
-        return view('admins.products',['products'=> $products]);
+        $categories = Category::all('id','category_name');
+        return view('admins.products',['products'=> $products, 'categories' => $categories]);
     }
 
     /**
@@ -35,7 +37,27 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        request()->validate([
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        if ($request->file('logo')) {
+            $imageName = request()->logo->getClientOriginalName() .'-'. time().'.'. request()->logo->getClientOriginalExtension();
+            request()->logo->move(public_path('img/products'), $imageName);
+            Products::create([
+                'product_name' => $request->product_name,
+                'product_description' => $request->product_description,
+                'product_url' => $request->product_url,
+                'category_id' => $request->category_id,
+                'product_quantity' => $request->product_quantity,
+                'product_price' => $request->product_price,
+                'product_condition' => $request->product_condition,
+                'product_keyword' => $request->product_keyword,
+                'product_content' => $request->product_content,
+                'product_image' => $imageName,
+                
+            ]);
+        }
+        return redirect('products')->with('success', 'Page created successfully.');
     }
 
     /**

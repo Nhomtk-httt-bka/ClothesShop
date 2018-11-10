@@ -33,12 +33,14 @@ Route::middleware('admin_auth')->group(function(){
 	Route::resource('products','ProductController');
 });
 
+Route::resource('users','UserController');
 Route::get('home','UserController@showHome');
 Route::get('login','UserController@showLogin');
 Route::post('signin','UserController@checkAuth');
-Route::get('register', 'UserController@showRegister');
-Route::post('register','UserController@create')->name('register');
 Route::get('logout', 'UserController@doLogout');
+Route::get('profile',function(){
+	return view('users.profile');
+});
 
 Route::middleware(['first', 'second'])->group(function () {
     Route::get('/buy', function () {
