@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\models\Products;
 use App\models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class CategoryController extends Controller
+class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,19 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        
-        return view('admins/categories',['categories'=>$categories]);
+        $products = Products::all('id','product_name','product_price','product_rate','product_image');
+        $categories = Category::all('id','category_name');
+        return view('users/home',['products'=> $products, 'categories' => $categories]);
+    }
+    public function showProduct($id){
+        // User view product
+        $product = Products::find($id);
+        return view('users.product',['product' => $product]);
+    }
+    public function showCategory($id){
+        // User view product
+        // $product = Category::find($id);
+        // return view('users.product',['product' => $product]);
     }
 
     /**
@@ -26,7 +36,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -37,12 +47,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create([
-            'category_name' => $request->category_name,
-            'category_description' => $request->category_description,
-            'category_url' => $request->category_url,
-        ]);
-        return redirect('categories');
+        //
     }
 
     /**
@@ -64,8 +69,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-        return view('admins.category_update',['category' => $category]);
+        //
     }
 
     /**
@@ -77,16 +81,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        $category = Category::find($id);
-        
-        $category->category_name = $request->category_name;
-        $category->category_description = $request->category_description;
-        $category->category_url = $request->category_url;
-        
-        $category->save();
-        
-        return redirect('categories');
+        //
     }
 
     /**
@@ -97,7 +92,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::destroy($id);
-        return redirect('categories');
+        //
     }
 }

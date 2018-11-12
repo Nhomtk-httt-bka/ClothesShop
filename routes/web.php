@@ -12,9 +12,12 @@
 */
 
 Route::get('/', function () {
-    return view('users/home');
+    return redirect('home');
 });
+Route::resource('home','HomeController');
+Route::get('product/{id}','HomeController@showProduct');
 
+ // Admin
 Route::resource('admins', 'AdminController');
 Route::prefix('admin')->group(function(){
 	Route::middleware('admin_auth')->group(function(){
@@ -23,7 +26,7 @@ Route::prefix('admin')->group(function(){
 	Route::post('login','AdminController@checkAuth');
 	Route::get('forgotPass', 'AdminController@showForgot');
 	Route::get('logout',function(){
-		Auth::logout();
+		auth('admin')->logout();
     	return redirect('admins/');
 	});
 });
@@ -34,7 +37,6 @@ Route::middleware('admin_auth')->group(function(){
 });
 
 Route::resource('users','UserController');
-Route::get('home','UserController@showHome');
 Route::get('login','UserController@showLogin');
 Route::post('signin','UserController@checkAuth');
 Route::get('logout', 'UserController@doLogout');

@@ -1,21 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\models\Products;
-use App\models\Category;
-
+use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserPost;
 
 
 class UserController extends Controller
 {
-    public function showHome(){
-        $products = Products::all('product_name','product_price','product_rate','product_image');
-        $categories = Category::all('category_name');
-        return view('users/home',['products'=> $products, 'categories' => $categories]);
-    }
-
+    
     public function showLogin(){
         return view('users/login');
     }
@@ -63,16 +60,24 @@ class UserController extends Controller
      */
     public function store(StoreUserPost $request)
     {
-        // echo $request;
-
         $validated = $request->validated();
-
-        User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
-        ]);
-        return redirect('home');
+        if($request->file('logo')) {
+            $imageName = request()->logo->getClientOriginalName() .'-'. time().'.'. request()->logo->getClientOriginalExtension();
+            request()->logo->move(public_path('img/users'), $imageName);
+            User::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'user_phone' => $request->user_phone,
+                'user_address' => $request->user_address,
+                'password' => Hash::make($request['password']),
+                'user_image' => $imageName,
+            ]);
+            return redirect('home')->with('success', 'User created successfully.');
+        }
+        return Redirect::back()->withErrors(['The image null or wrong type'])->withInput();
+        
     }
 
     /**

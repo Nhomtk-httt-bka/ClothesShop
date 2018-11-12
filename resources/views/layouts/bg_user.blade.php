@@ -30,13 +30,43 @@
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     @include('component.navbar_user')
-    <div style="margin: 1px;"></div>
+    <div style="margin: 6px;"></div>
     @if(Request::is('home'))
       @include('component.slide_show')
     @endif
     
-    @yield('content')
+    <div class="row">
+        @if(Request::is('home'))
+            <div class="col-md-2 border border-dark rounded border-left-0">
+                @include('component.sidebar_user')
+            </div>
+            <div class="col-md-10">
+        @endif
+            @yield('content')
+        </div>
+    </div>
     
+    <!-- The Modal -->
+    <div class="modal fade" id="cart">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <!-- Modal header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Shopping Cart </h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            Cart body.......
+          </div>
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Checkout</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     @include('component.footer_user')
   </body>
     
