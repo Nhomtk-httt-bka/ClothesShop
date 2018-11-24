@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\models\Products;
 use App\models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class ProductController extends Controller
 {
@@ -56,8 +57,9 @@ class ProductController extends Controller
                 'product_image' => $imageName,
                 
             ]);
+            return redirect('products')->with('success', 'Product created successfully.');
         }
-        return redirect('products')->with('success', 'Page created successfully.');
+        return Redirect::back()->withErrors(['image', 'The image null or wrong type']);
     }
 
     /**
@@ -68,7 +70,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

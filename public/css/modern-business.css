@@ -27,3 +27,16 @@ body {
 .portfolio-item {
   margin-bottom: 30px;
 }
+.dropdown:hover>.dropdown-menu {
+  display: block;
+}
+a, a:hover{
+  color: black;
+  text-decoration: none;
+}
+.category a:hover{
+  color: orange;
+  background-color: #7f89a7;
+  border-radius: 4px;
+  text-decoration: none;
+}

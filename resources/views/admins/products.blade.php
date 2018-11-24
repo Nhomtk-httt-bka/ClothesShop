@@ -8,6 +8,12 @@
           <strong>{{ $message }}</strong>
         </div>
       @endif
+      @if($errors->any())
+        <div class="alert alert-danger alert-block">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>{{$errors->first()}}</strong>
+        </div>
+      @endif
       <div class="card-header">Form create Product</div>
       <form action="{{ url('products') }}" method="post" enctype="multipart/form-data"> 
         @csrf
