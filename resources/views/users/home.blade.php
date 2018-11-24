@@ -72,11 +72,10 @@
           </div>
         @endforeach
         
-        
       </div>
       <!-- /.row -->
 
-      
+      {{ $products->links() }}
 
       <hr>
 

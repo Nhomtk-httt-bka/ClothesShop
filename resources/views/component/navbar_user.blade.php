@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="">About</a>
+          <a class="nav-link" href="{{ url('about') }}">About</a>
         </li>
         
         
@@ -30,10 +30,10 @@
         @auth
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="{{ asset('img/users/' . Auth::user()->user_image) }}" height="30" width="40" alt="avatar"> {{ Auth::user()->username }}
+              <img src="{{ asset('storage/' . Auth::user()->user_image) }}" height="30" width="40" alt="avatar"> {{ Auth::user()->username }}
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-              <a class="dropdown-item" href="{{ url('profile') }}"><i class="fa fa-id-card"></i> Profile</a>
+              <a class="dropdown-item" href="{{ url('users/'. Auth::user()->id) }}"><i class="fa fa-id-card"></i> Profile</a>
               <a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Settings</a>
               <a class="dropdown-item" href="{{ url('logout') }}">Logout</a>
             </div>

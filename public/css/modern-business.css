@@ -35,6 +35,8 @@ a, a:hover{
   text-decoration: none;
 }
 .category a:hover{
-  color: red;
+  color: orange;
+  background-color: #7f89a7;
+  border-radius: 4px;
   text-decoration: none;
 }

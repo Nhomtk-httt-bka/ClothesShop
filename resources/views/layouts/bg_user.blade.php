@@ -23,7 +23,7 @@
     
   <body>
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <!-- <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script> -->
 
     <!-- Bootstrap core JavaScript -->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
@@ -57,7 +57,39 @@
           </div>
           <!-- Modal body -->
           <div class="modal-body">
-            Cart body.......
+            <div>
+              <?php $cart = session('cart') ?>
+              @if(session()->has('cart'))
+               
+                <table class="table">
+                  <thead>
+                    <th scope="col">image</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Action</th>
+                  </thead>
+                  <tbody>
+                    @foreach ( $cart as $product )
+                      
+                      <tr>
+                        <td><img src="{{asset('img/products/'. $product->product_image )}}" alt="product" height="30px" width="40px;"></td>
+                        <td>{{ $product->product_name }}</td>
+                        <?php 
+                          $sub = substr($product->product_price,-3);
+                          $pre = substr($product->product_price,0,-3);
+                          $price = $pre . '.' .$sub;
+                        ?>
+                        <td>{{ $price }} đ</td>
+                        <td>{{ $product->quantity }}</td>
+                        <td><button id="{{ $product->id }}" onclick="rmProduct(this)" class="btn btn-danger">x</button></td>
+                      </tr>
+                    @endforeach 
+                    
+                  </tbody>
+                </table>
+              @endif
+            </div>
           </div>
           <!-- Modal footer -->
           <div class="modal-footer">
@@ -69,7 +101,36 @@
     </div>
     @include('component.footer_user')
   </body>
-    
+  <script>
+
+    function rmProduct(el){
+        var product_id = el.getAttribute('id');
+
+        var cart = <?php echo json_encode($cart); ?>;
+        
+              
+        
+        var data = {
+          _token: "{{ csrf_token() }}",
+          product_id: product_id
+        };
+        $(document).ready(function(){
+            $.ajax({
+                url: "{{ url('rmProduct') }}",
+                method: 'post',
+                async: true,
+                data: data,
+                success: function(result) {
+                    $(el).parent().parent().remove();
+                },
+                error: function() {
+                    alert('Sorry have error , please load again this page');
+                },
+            });
+            
+        });
+    }
+  </script>
 </html>
 
 

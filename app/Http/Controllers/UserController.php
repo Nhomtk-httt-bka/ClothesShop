@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use App\models\Products;
+use App\models\Cart;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserPost;
+
 
 
 class UserController extends Controller
@@ -16,8 +20,9 @@ class UserController extends Controller
     public function showLogin(){
         return view('users/login');
     }
-    public function doLogout(){
+    public function doLogout(Request $request){
         Auth::logout();
+        $request->session()->flush();
         return redirect('home');
     }
     protected function checkAuth(Request $request){
@@ -26,6 +31,53 @@ class UserController extends Controller
             'password'=>$request->password,
         ];
         if(Auth::attempt($credential)){
+            
+            $user = User::find(Auth::user()->id);
+            $cart = $request->session()->get('cart');
+            
+            if(!is_null($cart)){
+                foreach ($cart as $key => $product_incart) {
+                    $is_exit = 0;
+                    foreach ($user->carts as $prod) {
+                        if($prod->id == $key) {
+                            $product = Cart::where('user_id', $user->id )
+                                            ->where('product_id',$prod->id)
+                                            ->update(['quantity' => $product_incart->quantity + $prod->pivot->quantity] );
+
+                            $product_incart->quantity += $prod->pivot->quantity;
+
+                            $is_exit = 1;
+                            break;
+                        }    
+                    }
+                    // Chua co trong gio hang CSDL
+                    if(!$is_exit){
+
+                        Cart::create([
+                            'user_id' => $user->id,                
+                            'product_id' => $key,               
+                            'quantity' => $product_incart->quantity,               
+                        ]);
+                    }    
+                }
+                foreach ($user->carts as $prod) {
+                    if(!array_key_exists($prod->id,$cart)) {
+                        $prod->quantity = $prod->pivot->quantity;
+                        $cart[$prod->id] = $prod;
+                    }
+                }
+
+                
+            }else{
+
+                foreach ($user->carts as $prod) {
+                    $prod->quantity = $prod->pivot->quantity;
+                    $cart[$prod->id] = $prod;
+                }
+                
+            }
+            
+            $request->session()->put('cart', $cart);
             return redirect('home');
         }else{
             return redirect('login')->withInput();
@@ -62,8 +114,9 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         if($request->file('logo')) {
-            $imageName = request()->logo->getClientOriginalName() .'-'. time().'.'. request()->logo->getClientOriginalExtension();
-            request()->logo->move(public_path('img/users'), $imageName);
+            $path = $request->file('logo')->store('public/users');
+            $path = explode("/", $path);
+            $path = $path[1] .'/'.$path[2];
             User::create([
                 'username' => $request->username,
                 'email' => $request->email,
@@ -72,7 +125,7 @@ class UserController extends Controller
                 'user_phone' => $request->user_phone,
                 'user_address' => $request->user_address,
                 'password' => Hash::make($request['password']),
-                'user_image' => $imageName,
+                'user_image' => $path,
             ]);
             return redirect('home')->with('success', 'User created successfully.');
         }
@@ -81,14 +134,14 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified user.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        return view('users/profile');
     }
 
     /**
@@ -111,7 +164,30 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // $validated = $request->validated();
+        $user = User::find($id);
+        if($request->file('logo')) {
+            unlink(storage_path('app/public/'. $user->user_image));
+            $path = $request->file('logo')->store('public/users');
+            $path = explode("/", $path);
+            $path = $path[1] .'/'.$path[2];
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->email = $request->email;
+            $user->user_phone = $request->user_phone;
+            $user->user_address = $request->user_address;
+            $user->user_image = $path;
+            $user->save();
+        }else{
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->email = $request->email;
+            $user->user_phone = $request->user_phone;
+            $user->user_address = $request->user_address;
+            $user->save();
+        }
+        return redirect()->back();
+        
     }
 
     /**

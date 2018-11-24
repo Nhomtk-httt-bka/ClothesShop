@@ -12,9 +12,12 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function about(){
+        return view('users/about');
+    }
     public function index()
     {
-        $products = Products::all('id','product_name','product_price','product_rate','product_image');
+        $products = Products::paginate(3);
         $categories = Category::all('id','category_name');
         return view('users/home',['products'=> $products, 'categories' => $categories]);
     }
@@ -24,9 +27,9 @@ class HomeController extends Controller
         return view('users.product',['product' => $product]);
     }
     public function showCategory($id){
-        // User view product
-        // $product = Category::find($id);
-        // return view('users.product',['product' => $product]);
+        // list product in category
+        $category = Category::find($id);
+        return view('users.category',['category' => $category]);
     }
 
     /**

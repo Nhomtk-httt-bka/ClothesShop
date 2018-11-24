@@ -14,8 +14,6 @@
 Route::get('/', function () {
     return redirect('home');
 });
-Route::resource('home','HomeController');
-Route::get('product/{id}','HomeController@showProduct');
 
  // Admin
 Route::resource('admins', 'AdminController');
@@ -24,7 +22,7 @@ Route::prefix('admin')->group(function(){
 		Route::get('dashboard', 'AdminController@showDashboard');
 	});
 	Route::post('login','AdminController@checkAuth');
-	Route::get('forgotPass', 'AdminController@showForgot');
+	
 	Route::get('logout',function(){
 		auth('admin')->logout();
     	return redirect('admins/');
@@ -36,13 +34,22 @@ Route::middleware('admin_auth')->group(function(){
 	Route::resource('products','ProductController');
 });
 
+// Home site user
+Route::resource('home','HomeController');
+Route::get('product/{id}','HomeController@showProduct');
+Route::get('category/{id}','HomeController@showCategory');
+Route::get('about','HomeController@about');
+
+
+// User
 Route::resource('users','UserController');
 Route::get('login','UserController@showLogin');
 Route::post('signin','UserController@checkAuth');
 Route::get('logout', 'UserController@doLogout');
-Route::get('profile',function(){
-	return view('users.profile');
-});
+
+// Cart
+Route::resource('carts','CartController');
+Route::post('rmProduct','CartController@rmProduct');
 
 Route::middleware(['first', 'second'])->group(function () {
     Route::get('/buy', function () {
