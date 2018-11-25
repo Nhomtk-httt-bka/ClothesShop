@@ -5,6 +5,12 @@
       <span>Dashboard</span>
     </a>
   </li>
+  <li class="nav-item {{ Request::is('employees') ? 'active' : ''}}">
+    <a class="nav-link" href="{{ url('employees') }}">
+      <i class="fa fa-tasks"></i>
+      <span>Employee</span>
+    </a>
+  </li>
   <li class="nav-item {{ Request::is('categories') ? 'active' : ''}}">
     <a class="nav-link" href="{{ url('categories') }}">
       <i class="fa fa-tasks"></i>

@@ -32,6 +32,7 @@ Route::prefix('admin')->group(function(){
 Route::middleware('admin_auth')->group(function(){
 	Route::resource('categories','CategoryController');
 	Route::resource('products','ProductController');
+	Route::resource('employees','EmployeeController');
 });
 
 // Home site user

@@ -64,6 +64,7 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'admin_phone' => $request->admin_phone,
             'admin_email' => $request->admin_email,
+            'admin_status' => 2 // 1 is admin, 0 is employee
             
         ]);
         return redirect('admin/dashboard');
