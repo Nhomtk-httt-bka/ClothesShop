@@ -81,7 +81,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Products::find($id);
+        $categoryId = $product->category_id;
+        $categories = Category::all('id','category_name');
+
+        return view('admins.product_update',['product' => $product, 'categoryId' => $categoryId, 'categories' => $categories]);
     }
 
     /**
@@ -93,7 +97,41 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Products::find($id);
+        if ($request->file('logo')) {
+            request()->validate([
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+            $imageName = request()->logo->getClientOriginalName() .'-'. time().'.'. request()->logo->getClientOriginalExtension();
+            request()->logo->move(public_path('img/products'), $imageName);
+
+            $product->product_name = $request->product_name;
+            $product->product_description = $request->product_description;
+            $product->product_url = $request->product_url;
+            $product->category_id = $request->category_id;
+            $product->product_quantity = $request->product_quantity;
+            $product->product_price = $request->product_price;
+            $product->product_condition = $request->product_condition;
+            $product->product_keyword = $request->product_keyword;
+            $product->product_content = $request->product_content;
+            $product->product_image = $imageName;
+
+            $product->save();
+        } else {
+            $product->product_name = $request->product_name;
+            $product->product_description = $request->product_description;
+            $product->product_url = $request->product_url;
+            $product->category_id = $request->category_id;
+            $product->product_quantity = $request->product_quantity;
+            $product->product_price = $request->product_price;
+            $product->product_condition = $request->product_condition;
+            $product->product_keyword = $request->product_keyword;
+            $product->product_content = $request->product_content;
+
+            $product->save();
+        }
+            return redirect('products')->with('success', 'Product updated successfully.');
     }
 
     /**
@@ -104,6 +142,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Products::destroy($id);
+        return redirect('products');
     }
 }
