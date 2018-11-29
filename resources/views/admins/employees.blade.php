@@ -28,16 +28,28 @@
                    <td>{{ $employee->admin_email }}</td>
                    <td>{{ $employee->admin_phone }}</td>
                    <td>
-                    <a class="btn text-white bg-danger clearfix small z-1" href="{{ url('employees/'.$employee->id).'/edit' }}">
+
+                   	@if( $employee->admin_status == 1)
+                    <a class="btn text-white bg-danger clearfix small z-1" href="{{ url('employees/block/'.$employee->id) }}">
                         Block
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
                         </span>
                       </a>
+                      @else
+                      <a class="btn text-white bg-success clearfix small z-1" href="{{ url('employees/unblock/'.$employee->id) }}">
+                        Unblock
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="">
+                          <i class="fas fa-angle-right"></i>
+                        </span>
+                      </a>
+                      @endif
+
                    </td>
                    <td>
-                      <button class="btn text-white bg-success clearfix small z-1" onclick="get_employee_detail(<?php echo $employee->id; ?>)" >
+                      <button class="btn text-white bg-info clearfix small z-1" onclick="get_employee_detail(<?php echo $employee->id; ?>)" >
                         View Details    
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
@@ -58,7 +70,18 @@
   	<!-- Add employee-->
   	<div class="card mx-auto mt-6">
       <div class="card-header"><b>CREATE EMPLOYEE</b></div>
-
+      @if($errors->has('employee_name'))
+			 			<p style="color: red">{{$errors->first('employee_name')}}</p>
+			 		@endif
+			@if($errors->has('employee_email'))
+			 			<p style="color: red">{{$errors->first('employee_email')}}</p>
+			 		@endif
+			@if($errors->has('employee_phone'))
+			 			<p style="color: red">{{$errors->first('employee_phone')}}</p>
+			 		@endif
+        	@if(isset($message))
+			 			<p style="color: red">{{$message}}</p>
+			 		@endif
       <form action="{{ url('employees') }}" method="post"> 
         @csrf
         <div class="card-body text-center">
@@ -85,22 +108,6 @@
               		<label for="phone">Phone</label>
             	</div>
         	</div>
-
-        	@if($errors->has('employee_name'))
-			 			<p style="color: red">{{$errors->first('employee_name')}}</p>
-			 		@endif
-			@if($errors->has('employee_email'))
-			 			<p style="color: red">{{$errors->first('employee_email')}}</p>
-			 		@endif
-			@if($errors->has('employee_phone'))
-			 			<p style="color: red">{{$errors->first('employee_phone')}}</p>
-			 		@endif
-        	@if(isset($message))
-			 			<p style="color: red">{{$message}}</p>
-			 		@endif
-        	
-
-
         </div>
 
         

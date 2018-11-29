@@ -11,6 +11,12 @@
       <span>Employee</span>
     </a>
   </li>
+   <li class="nav-item {{ Request::is('users') ? 'active' : ''}}">
+    <a class="nav-link" href="{{ url('users') }}">
+      <i class="fa fa-tasks"></i>
+      <span>User</span>
+    </a>
+  </li>
   <li class="nav-item {{ Request::is('categories') ? 'active' : ''}}">
     <a class="nav-link" href="{{ url('categories') }}">
       <i class="fa fa-tasks"></i>

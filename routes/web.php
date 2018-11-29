@@ -33,7 +33,16 @@ Route::middleware('admin_auth')->group(function(){
 	Route::resource('categories','CategoryController');
 	Route::resource('products','ProductController');
 	Route::resource('employees','EmployeeController');
+	Route::resource('users','UserController');
 });
+
+
+Route::get('employees/block/{id}', 'EmployeeController@blockEmployee');
+Route::get('employees/unblock/{id}', 'EmployeeController@unblockEmployee');
+Route::get('users/block/{id}', 'UserController@blockUser');
+Route::get('users/unblock/{id}', 'UserController@unblockUser');
+Route::get('users/details/{id}','UserController@getDetail');
+
 
 // Home site user
 Route::resource('home','HomeController');

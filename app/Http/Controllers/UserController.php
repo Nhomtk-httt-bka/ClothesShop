@@ -84,6 +84,29 @@ class UserController extends Controller
         }
          
     }
+
+    public function blockUser($id){
+        $user = User::find($id);
+
+        $user->status = 0;
+        $user->save();
+        return redirect("users");
+    }
+
+    public function unblockUser($id){
+        $user = User::find($id);
+
+        $user->status = 1;
+        $user->save();
+        return redirect("users");
+    }
+
+    public function getDetail($id){
+       
+        $user = User::find($id);
+        echo $user;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -91,7 +114,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+
+        return view('admins/users', ['users'=>$users]);
     }
 
     /**
@@ -152,7 +177,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+
+        $user->status = 0;
+        $user->save();
+        return redirect("users");
     }
 
     /**

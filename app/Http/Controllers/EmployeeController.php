@@ -11,9 +11,26 @@ use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller
 {
+
+	public function blockEmployee($id){
+		$employee = Admin::find($id);
+
+    	$employee->admin_status = 0;
+    	$employee->save();
+    	return redirect("employees");
+	}
+
+	public function unblockEmployee($id){
+		$employee = Admin::find($id);
+
+    	$employee->admin_status = 1;
+    	$employee->save();
+    	return redirect("employees");
+	}
+
     public function index()
     {
-       $employees = Admin::all()->where('admin_status', 1);
+       $employees = Admin::all()->where('admin_status', '<', 2); 	
        return view('admins/employees',['employees'=>$employees]);
     }
 
@@ -84,11 +101,7 @@ class EmployeeController extends Controller
     }
 
     public function edit($id){
-    	$employee = Admin::find($id);
-
-    	$employee->admin_status = 0;
-    	$employee->save();
-    	return redirect("employees");
+    	
     }
 
     public function update(Request $request, $id){
