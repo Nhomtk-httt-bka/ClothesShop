@@ -18,6 +18,8 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/modern-business.css') }}" rel="stylesheet">
+    
+    <link href="{{ asset('css/comment.css') }}" rel="stylesheet">
   
   </head>
     
@@ -81,7 +83,7 @@
                           $price = $pre . '.' .$sub;
                         ?>
                         <td>{{ $price }} đ</td>
-                        <td>{{ $product->quantity }}</td>
+                        <td><input class="form-control" type="number" min=1 value="{{ $product->quantity }}"></td>
                         <td><button id="{{ $product->id }}" onclick="rmProduct(this)" class="btn btn-danger">x</button></td>
                       </tr>
                     @endforeach 
