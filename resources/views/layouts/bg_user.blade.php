@@ -95,7 +95,9 @@
           </div>
           <!-- Modal footer -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Checkout</button>
+            @if(session()->has('cart'))
+              <a href="{{ url('carts') }}" class="btn btn-primary" >Checkout</a>
+            @endif
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>

@@ -11,11 +11,11 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{{ url('about') }}">About</a>
+          <a class="nav-link" href="{{ url('about') }}"><i class="fa fa-question-circle"></i> About</a>
         </li>
         
         
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Other Pages
           </a>
@@ -26,7 +26,7 @@
             <a class="dropdown-item" href="404.html">404</a>
             <a class="dropdown-item" href="pricing.html">Pricing Table</a>
           </div>
-        </li>
+        </li> -->
         @auth
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

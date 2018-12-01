@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\models\Products;
 use App\models\Category;
+use App\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,7 +25,16 @@ class HomeController extends Controller
     public function showProduct($id){
         // User view product
         $product = Products::find($id);
-        return view('users.product',['product' => $product]);
+        $comments = [];
+        
+        foreach ($product->comments as $comment) {
+            $come['comment_content'] = $comment->comment_content;
+            $come['created_at'] = $comment->created_at;
+            $user = User::find($comment->user_id);
+            $come['image'] = $user->user_image;
+            $comments[] = $come;
+        }
+        return view('users.product',['product' => $product,'comments' => $comments]);
     }
     public function showCategory($id){
         // list product in category
