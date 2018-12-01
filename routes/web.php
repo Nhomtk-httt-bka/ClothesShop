@@ -51,6 +51,10 @@ Route::get('logout', 'UserController@doLogout');
 Route::resource('carts','CartController');
 Route::post('rmProduct','CartController@rmProduct');
 
+// Test
+Route::get('test', function() {
+    return view('users.cart');
+});
 Route::middleware(['first', 'second'])->group(function () {
     Route::get('/buy', function () {
         // Uses first & second Middleware
