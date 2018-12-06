@@ -20,6 +20,6 @@ class UserRedirectNotAuthenticate
             return $next($request);
         }
 
-        return redirect('home');
+        return redirect('login');
     }
 }

@@ -83,7 +83,7 @@
                           $price = $pre . '.' .$sub;
                         ?>
                         <td>{{ $price }} đ</td>
-                        <td><input class="form-control" type="number" min=1 value="{{ $product->quantity }}"></td>
+                        <td><input class="form-control" min=1 value="{{ $product->quantity }}" readonly></td>
                         <td><button id="{{ $product->id }}" onclick="rmProduct(this)" class="btn btn-danger">x</button></td>
                       </tr>
                     @endforeach 
@@ -96,7 +96,7 @@
           <!-- Modal footer -->
           <div class="modal-footer">
             @if(session()->has('cart'))
-              <a href="{{ url('carts') }}" class="btn btn-primary" >Checkout</a>
+              <a href="{{ url('shopCarts') }}" class="btn btn-primary" >Carts</a>
             @endif
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>

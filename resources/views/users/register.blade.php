@@ -20,7 +20,7 @@
     </style>
     <div class="card">
         <div class="card-header">
-          <h3 class="panel-title">Complete this form in quick 3 steps!  <a  href="{{ url('home') }}" class="btn btn-primary float-right">Home</a></h3>
+          <h3 class="panel-title">Complete this form in quick 3 steps!  <a  href="{{ url('home') }}" class="btn btn-primary float-right"><i class="fa fa-home"></i> Home</a></h3>
         </div>
         <div class="card-body">
           <form name="basicform" id="basicform" enctype="multipart/form-data" method="post" action="{{ url('users') }}">

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 use App\models\Products;
 use App\models\Cart;
+use App\models\Transactions;
+use App\models\Orders;
 
 class CartController extends Controller
 {
@@ -15,14 +17,48 @@ class CartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function checkout(){
+    public function checkout(Request $request){
+        $cart = $request->session()->get('cart');
+
+        $total = 0;
+        foreach ($cart as $id => $item) {
+            $product = Products::find($id);
+            if($item->quantity > $product->product_quantity){
+                return redirect('shopCarts')->withErrors('Sản phẩm '. $product->product_name .' này không còn đủ hàng như yêu cầu của bạn');
+                break;
+            }
+            $total += $item->quantity * $product->product_price;
+        }
+
+
+        $transaction = Transactions::create([
+            'user_id' => Auth::user()->id,                
+            'total_money' => $total,               
+            'status' => 1,               
+        ]);
+        foreach ($cart as $id => $item) {
+            Products::find($id)->decrement('product_quantity', $item->quantity);
+            $order = Orders::create([               
+                'transaction_id' => $transaction->id,               
+                'product_id' => $id,
+                'quantity' => $item->quantity,
+                'price' => $item->product_price,
+                'status' => 1,              
+            ]);
+        }
+        Cart::where('user_id', Auth::user()->id )->delete();
+        
+        $request->session()->put('cart', null);
+        return redirect('home')->with('success', 'Đơn hàng đã được gửi. ');
         
     }
+
+    // xoa san pham trong gio hàng
     public function rmProduct(Request $request){
         $cart = $request->session()->get('cart');
         if(array_key_exists($request->product_id,$cart)) {
             if( Auth::check() ){
-                $product = Cart::where('user_id', Auth::user()->id )
+                $item = Cart::where('user_id', Auth::user()->id )
                             ->where('product_id', $request->product_id)
                             ->delete();
             }
@@ -31,7 +67,24 @@ class CartController extends Controller
         $request->session()->put('cart', $cart);
         return redirect()->back();
     }
-    public function index()
+
+    // Change quantity of product
+    public function chageQuatyProduct(Request $request){
+        $cart = $request->session()->get('cart');
+        if(array_key_exists($request->product_id,$cart)) {
+            if( Auth::check() ){
+                $item = Cart::where('user_id', Auth::user()->id )
+                            ->where('product_id', $request->product_id)
+                            ->update(['quantity' => $request->quantity ]);
+            }
+            $cart[$request->product_id]->quantity = $request->quantity;
+        }
+        $request->session()->put('cart', $cart);
+        return redirect()->back();
+    }
+
+    // show carts
+    public function shopCarts()
     {
         return view('users.cart');
     }

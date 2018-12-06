@@ -49,8 +49,9 @@
 				<li class="nav-item">
 					<a href="#profile" class="nav-link active" data-toggle="tab"><i class="fa fa-address-book"></i> Profile </a>
 				</li>
+
 				<li class="nav-item">
-					<a href="#update" class="nav-link" data-toggle="tab">Update</a>
+					<a href="#update" class="nav-link" data-toggle="tab"><i class="fa fa-cog"></i> Update</a>
 				</li>
 				<li class="nav-item">
 					<a href="#reset" class="nav-link" data-toggle="tab">Reset Password</a>

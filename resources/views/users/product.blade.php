@@ -48,7 +48,7 @@
 				<br>
 				<div class="row">
 					<div class="col-md-6">
-						<a class="btn btn-warning" style="width: 100%" href="{{ url('carts') }}">Shopping cart</a>
+						<a class="btn btn-warning" style="width: 100%" href="{{ url('shopCarts') }}">Shopping cart</a>
 					</div>
 					<div class="col-md-6">
 						<form action="{{ url('carts') }}" method="post">
@@ -73,12 +73,12 @@
 
 		<hr><br>
 		
-		<div class="container-fluid">
-			<div class="card text-white bg-info mb-3" style="max-width: 100rem;">
+		<div class="container align-items-md-center">
+			<div class="card">
 			  <div class="card-header">Description</div>
 			  <div class="card-body">
 			    
-			    <p class="card-text">{{ $product->product_description }}</p>
+			    <p class="card-text" style="font-size: 20px;">{{ $product->product_description }}</p>
 			  </div>
 			</div>
 		</div>

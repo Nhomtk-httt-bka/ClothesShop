@@ -240,7 +240,23 @@
     }
   </style>
 
-  <h1>Shopping Cart</h1>
+  <div class="container">
+    <h1>Shopping Cart</h1> 
+    @if($errors->any())
+      <div class="alert alert-danger alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{$errors->first()}}</strong>
+      </div>
+    @endif
+    @if(session()->has('success'))
+      <div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ session('success') }}</strong>
+      </div>
+    @endif 
+  </div>
+  <br><br><br>
+  
   <br>
    
   <div class="shopping-cart">
@@ -262,7 +278,7 @@
               <img src="{{asset('img/products/'. $product->product_image )}}">
             </div>
             <div class="product-details">
-              <div class="product-title">{{ $product->product_name }}</div>
+              <div class="product-title"><a href="{{ url('product/'.$product->id) }}">{{ $product->product_name }}</a></div>
               <?php 
                 $desc = substr($product->product_description,0,100);
               ?>
@@ -275,10 +291,10 @@
             ?>
             <div class="product-price">{{ $price }} </div>
             <div class="product-quantity">
-              <input type="number" value="{{ $product->quantity }}" min="1">
+              <input id="quantity" type="number" product_id="{{ $product->id }}" value="{{ $product->quantity }}" min="1">
             </div>
             <div class="product-removal">
-              <button class="remove-product">
+              <button id="{{ $product->id }}" class="remove-product" onclick="rmProduct(this)">
                 Remove
               </button>
             </div>
@@ -297,26 +313,67 @@
  
    
     <div class="totals">
-      <div class="totals-item">
-        <label>Subtotal</label>
-        <div class="totals-value" id="cart-subtotal"></div>
-      </div>
-      <div class="totals-item">
-        <label>Tax (5%)</label>
-        <div class="totals-value" id="cart-tax"></div>
-      </div>
       <div class="totals-item totals-item-total">
         <label>Grand Total</label>
         <div class="totals-value" id="cart-total"></div>
       </div>
     </div>
-         
-    <button class="checkout">Checkout</button>
+    <form action="{{ url('checkout') }}" method="post">
+      @csrf
+      <button class="checkout">Checkout</button>  
+    </form>
+    
   </div>
   <script>
     
+
     $(document).ready(function() {
       
+      $('input').on('focusin', function(){
+        console.log("Saving value " + $(this).val());
+        $(this).data('val', $(this).val());
+      });
+
+      // Event change input quantity
+      $("input").change(function(){
+        
+        var cart = <?php echo json_encode($cart); ?>;
+        var product_id = $(this).attr('product_id');
+        var quantity = $(this).val();
+        
+
+        var data = {
+          _token: "{{ csrf_token() }}",
+          product_id: product_id,
+          quantity: quantity
+        };
+        
+        if(quantity < 1){
+          alert('Bạn nhập đã số lượng âm, vui lòng xem lại giỏ hàng !');
+          var prev = $(this).data('val');
+          $(this).val(prev)
+        }else{
+
+          $.ajax({
+            url: "{{ url('chageQuatyProduct') }}",
+            method: 'post',
+            async: true,
+            data: data,
+            success: function(result) {
+                
+            },
+            error: function() {
+                alert('Sorry have error , please load again this page');
+            },
+          });
+          
+
+          
+        }
+
+
+      });
+
       /* Set rates + misc */
       var taxRate = 0.05;
       var fadeTime = 300;
@@ -333,23 +390,17 @@
        
        
       /* Recalculate cart */
-      function recalculateCart()
-      {
-        var subtotal = 0;
+      function recalculateCart(){
+        var total = 0;
          
         /* Sum up row totals */
         $('.product').each(function () {
-          subtotal += parseFloat($(this).children('.product-line-price').text());
+          total += parseFloat($(this).children('.product-line-price').text());
         });
          
-        /* Calculate totals */
-        var tax = subtotal * taxRate;
-        var total = subtotal + tax ;
          
         /* Update totals display */
         $('.totals-value').fadeOut(fadeTime, function() {
-          $('#cart-subtotal').html(subtotal.toFixed(3));
-          $('#cart-tax').html(tax.toFixed(3));
           $('#cart-total').html(total.toFixed(3));
           if(total == 0){
             $('.checkout').fadeOut(fadeTime);
@@ -362,8 +413,7 @@
        
        
       /* Update quantity */
-      function updateQuantity(quantityInput)
-      {
+      function updateQuantity(quantityInput){
         /* Calculate line price */
         var productRow = $(quantityInput).parent().parent();
         var price = parseFloat(productRow.children('.product-price').text());
@@ -382,8 +432,7 @@
        
        
       /* Remove item from cart */
-      function removeItem(removeButton)
-      {
+      function removeItem(removeButton){
         /* Remove row from DOM and recalc cart total */
         var productRow = $(removeButton).parent().parent();
         productRow.slideUp(fadeTime, function() {
@@ -393,6 +442,36 @@
       }
       recalculateCart() 
     });
-     
+    
+
+
+    function rmProduct(el){
+        var product_id = el.getAttribute('id');
+
+        var cart = <?php echo json_encode($cart); ?>;
+        
+              
+        
+        var data = {
+          _token: "{{ csrf_token() }}",
+          product_id: product_id
+        };
+        $(document).ready(function(){
+            $.ajax({
+                url: "{{ url('rmProduct') }}",
+                method: 'post',
+                async: true,
+                data: data,
+                success: function(result) {
+                    
+                },
+                error: function() {
+                    alert('Sorry have error , please load again this page');
+                },
+            });
+            
+        });
+    }
+  
   </script>
 @endsection
