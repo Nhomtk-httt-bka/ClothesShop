@@ -48,13 +48,18 @@
 				<br>
 				<div class="row">
 					<div class="col-md-6">
-						<a class="btn btn-warning" style="width: 100%" href="">Mua ngay</a>
+						<a class="btn btn-warning" style="width: 100%" href="{{ url('shopCarts') }}">Shopping cart</a>
 					</div>
 					<div class="col-md-6">
 						<form action="{{ url('carts') }}" method="post">
 							@csrf
 							<input type="hidden" name="product_id" value="{{ $product->id }}">
-							<button class="btn btn-danger" style="width: 100%">Thêm vào giỏ</button>	
+							<button class="btn btn-danger" style="width: 100%" 
+							@if($product->product_condition != 1)
+								disabled
+							@endif
+
+							> Thêm vào giỏ</button>	
 						</form>
 						
 					</div>
@@ -68,30 +73,17 @@
 
 		<hr><br>
 		
-		<div class="container-fluid">
-			<div class="card text-white bg-info mb-3" style="max-width: 100rem;">
+		<div class="container align-items-md-center">
+			<div class="card">
 			  <div class="card-header">Description</div>
 			  <div class="card-body">
 			    
-			    <p class="card-text">{{ $product->product_description }}</p>
+			    <p class="card-text" style="font-size: 20px;">{{ $product->product_description }}</p>
 			  </div>
 			</div>
 		</div>
-		<br>
 		
-			
-		<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
-	  	<script>
-	          tinymce.init({
-	              selector: "textarea",
-	              plugins: [
-	                  "advlist autolink lists link image charmap print preview anchor",
-	                  "searchreplace visualblocks code fullscreen",
-	                  "insertdatetime media table contextmenu paste"
-	              ],
-	              toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-	          });
-	  	</script>
+		
 		
 		<div class="comments">
 			<div class="comment-wrap">
@@ -102,43 +94,37 @@
 					
 				</div>
 				<div class="comment-block">
-					<form action="">
+					<form action="{{ url('comments') }}" method="post">
+						@csrf
+						
+						<input type="hidden" name="product_id" value="{{ $product->id }}">
+						<div class="form-group">
+						  <textarea name="comment_content" class="form-control" rows="5" id="comment"></textarea>
+						</div>
 						@auth
-							<textarea name="" id="" cols="30" rows="3" placeholder="Add comment..."></textarea>
-							<br>
-							<button type="submit" name="say" value="" class="btn btn-primary"><i class="fa fa-reply"></i> Comment</button>
+							<input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+							<button class="btn btn-primary" type="submit"><i class="fa fa-reply"></i> Comment</button> 
 						@endauth
 					</form>
 				</div>
 			</div>
-			<div class="comment-wrap">
-				<div class="photo">
-					<div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg')"></div>
-				</div>
-				<div class="comment-block">
-					<p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus architecto tempore, quaerat explicabo veniam fuga corporis totam reprehenderit quasi
-							sapiente modi tempora at perspiciatis mollitia, dolores voluptate. Cumque, corrupti?</p>
-					<div class="bottom-comment">
-						<div class="comment-date">Aug 24, 2014 @ 2:35 PM</div>
-							
+			@foreach ($comments as $comment )
+
+				<div class="comment-wrap">
+					<div class="photo">
+						<div class="avatar" style="background-image: url('{{asset('storage/' . $comment['image']) }}'); background-size: cover;" ></div>
+					</div>
+					<div class="comment-block">
+						<p class="comment-text">{{ $comment['comment_content'] }}</p>
+						<div class="bottom-comment">
+							<div class="comment-date">{{ $comment['created_at'] }}</div>
+								
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="comment-wrap">
-				<div class="photo">
-					<div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/felipenogs/128.jpg')"></div>
-				</div>
-				<div class="comment-block">
-					<p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus architecto tempore, quaerat explicabo veniam fuga corporis totam.</p>
-					<div class="bottom-comment">
-						<div class="comment-date">Aug 23, 2014 @ 10:32 AM</div>
-						<ul class="comment-actions">
-								<li class="complain">Complain</li>
-								<li class="reply">Reply</li>
-						</ul>
-					</div>
-				</div>
-			</div>
+			@endforeach
+			
+			
 			
 
 		</div>

@@ -1,45 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\models\Products;
-use App\models\Category;
-use App\User;
-use Illuminate\Http\Request;
 
-class HomeController extends Controller
+use Illuminate\Http\Request;
+use App\models\Comments;
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function about(){
-        return view('users/about');
-    }
     public function index()
     {
-        $products = Products::paginate(3);
-        $categories = Category::all('id','category_name');
-        return view('users/home',['products'=> $products, 'categories' => $categories]);
-    }
-    public function showProduct($id){
-        // User view product
-        $product = Products::find($id);
-        $comments = [];
-        
-        foreach ($product->comments as $comment) {
-            $come['comment_content'] = $comment->comment_content;
-            $come['created_at'] = $comment->created_at;
-            $user = User::find($comment->user_id);
-            $come['image'] = $user->user_image;
-            $comments[] = $come;
-        }
-        return view('users.product',['product' => $product,'comments' => $comments]);
-    }
-    public function showCategory($id){
-        // list product in category
-        $category = Category::find($id);
-        return view('users.category',['category' => $category]);
+        //
     }
 
     /**
@@ -60,7 +34,12 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Comments::create([
+            'user_id' => $request->user_id,
+            'product_id' => $request->product_id,
+            'comment_content' => $request->comment_content,
+        ]);
+        return redirect()->back();
     }
 
     /**
@@ -71,7 +50,7 @@ class HomeController extends Controller
      */
     public function show($id)
     {
-        
+        //
     }
 
     /**

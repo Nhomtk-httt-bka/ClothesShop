@@ -33,6 +33,12 @@ class UserController extends Controller
         if(Auth::attempt($credential)){
             
             $user = User::find(Auth::user()->id);
+            // is user block 
+            if ($user->status == 0) {
+                Auth::logout();
+                $request->session()->flush();
+                return redirect('login')->withErrors(['This account was blocked, please go to shop to support'])->withInput();
+            }
             $cart = $request->session()->get('cart');
             
             if(!is_null($cart)){
@@ -80,7 +86,7 @@ class UserController extends Controller
             $request->session()->put('cart', $cart);
             return redirect('home');
         }else{
-            return redirect('login')->withInput();
+            return redirect('login')->withErrors(['Wrong email or password'])->withInput();
         }
          
     }
@@ -217,6 +223,15 @@ class UserController extends Controller
         }
         return redirect()->back();
         
+    }
+
+    // Change new password
+    public function changePassword(Request $request){
+
+        $user = User::find($request->id);
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        return redirect()->back()->with('success', 'User change password successfully.');
     }
 
     /**

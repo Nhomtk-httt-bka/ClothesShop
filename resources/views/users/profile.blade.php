@@ -10,6 +10,12 @@
             <strong>{{$errors->first()}}</strong>
           </div>
         @endif
+        @if(session()->has('success'))
+          <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ session('success') }}</strong>
+          </div>
+        @endif
     <div class="row">
 
   		<div class="col-md-3 text-md-center"><h1>{{ Auth::user()->username }}</h1></div>
@@ -43,8 +49,9 @@
 				<li class="nav-item">
 					<a href="#profile" class="nav-link active" data-toggle="tab"><i class="fa fa-address-book"></i> Profile </a>
 				</li>
+
 				<li class="nav-item">
-					<a href="#update" class="nav-link" data-toggle="tab">Update</a>
+					<a href="#update" class="nav-link" data-toggle="tab"><i class="fa fa-cog"></i> Update</a>
 				</li>
 				<li class="nav-item">
 					<a href="#reset" class="nav-link" data-toggle="tab">Reset Password</a>
@@ -214,31 +221,30 @@
 	          		</form>
 				</div>
 				<div id="reset" class="container tab-pane fade">
-					<form action="">
+					<form action="{{ url('changePassword') }}" id="changePass" name="changePass">
 						@csrf
-						<div class="form-group">
-	                      	<div class="col-xs-6">
-	                          	<label for="password"><h4>Old Password</h4></label>
-	                          	<input type="password" class="form-control" id="password" title="enter a password" required>
-	                      	</div>
-	                  	</div>
+						<input type="hidden" value="{{ Auth::user()->id }}" name="id" id="id">
 	                  	<div class="form-group">
 	                      	<div class="col-xs-6">
 	                          	<label for="new_password"><h4>New Password</h4></label>
-	                          	<input type="password" class="form-control" id="new_password" title="enter a password" required>
+	                          	<input type="password" class="form-control" name="new_password" id="new_password"  required>
 	                      	</div>
 	                  	</div>
+	                  	<div class="clearfix" style="height: 10px;clear: both;"></div>
+
+
 	                  	<div class="form-group">
 	                      	<div class="col-xs-6">
 	                          	<label for="new_confirm"><h4>Retype new password</h4></label>
-	                          	<input type="password" class="form-control" id="new_confirm" title="enter a password" required>
+	                          	<input type="password" class="form-control" name="new_confirm" id="new_confirm" required>
 	                      	</div>
 	                  	</div>
+						<div class="clearfix" style="height: 10px;clear: both;"></div>
+
 	                  	<div class="form-group">
 	                       <div class="col-xs-12">
 	                            <br>
-	                          	<button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Reset</button>
-	                           	
+	                          	<button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Cập nhật</button>
 	                        </div>
 	                  	</div>
 					</form>
@@ -251,5 +257,33 @@
     </div><!--/row-->
 	<br>
 	<br>
+	<script type="text/javascript" src="{{ asset('js/jquery.validate.js') }}"></script>
+    <script type="text/javascript">
+      
+      jQuery().ready(function() {
 
+        // validate form on keyup and submit
+        var v = jQuery("#changePass").validate({
+          rules: {
+            
+            new_password: {
+              required: true,
+              minlength: 6,
+              maxlength: 15,
+            },
+            new_confirm: {
+              required: true,
+              minlength: 6,
+              equalTo: "#new_password",
+            }
+
+          },
+          errorElement: "span",
+          errorClass: "help-inline-error",
+        });
+
+       
+
+      });
+    </script>
 @endsection

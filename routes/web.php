@@ -33,7 +33,6 @@ Route::middleware('admin_auth')->group(function(){
 	Route::resource('categories','CategoryController');
 	Route::resource('products','ProductController');
 	Route::resource('employees','EmployeeController');
-	Route::resource('users','UserController');
 });
 
 
@@ -57,9 +56,20 @@ Route::get('login','UserController@showLogin');
 Route::post('signin','UserController@checkAuth');
 Route::get('logout', 'UserController@doLogout');
 
+// Redirect to login
+Route::middleware('user_auth')->group(function(){
+	Route::get('changePassword', 'UserController@changePassword');
+	Route::resource('comments','CommentController');
+	
+	Route::get('shopCarts', 'CartController@shopCarts');
+	Route::post('checkout', 'CartController@checkout');
+});
+
+
 // Cart
 Route::resource('carts','CartController');
 Route::post('rmProduct','CartController@rmProduct');
+Route::post('chageQuatyProduct','CartController@chageQuatyProduct');
 
 // Test
 Route::get('test', function() {

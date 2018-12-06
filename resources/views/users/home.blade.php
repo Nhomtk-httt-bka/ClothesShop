@@ -5,7 +5,18 @@
 
     <!-- Page Content -->
     <div class="container">
-
+      @if($errors->any())
+        <div class="alert alert-danger alert-block">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>{{$errors->first()}}</strong>
+        </div>
+      @endif
+      @if(session()->has('success'))
+        <div class="alert alert-success alert-block">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>{{ session('success') }}</strong>
+        </div>
+      @endif 
       <h1 class="my-4">Hot product</h1>
 
       <!-- Marketing Icons Section -->

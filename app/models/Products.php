@@ -12,7 +12,7 @@ class products extends Model
     }
 
     public function comments(){
-    	return $this->hasMany('App\models\Comments');
+    	return $this->hasMany('App\models\Comments','product_id');
     }
     public function users()
     {
