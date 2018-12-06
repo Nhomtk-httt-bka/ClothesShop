@@ -65,15 +65,16 @@ Route::middleware('user_auth')->group(function(){
 	Route::post('checkout', 'CartController@checkout');
 });
 
-
 // Cart
 Route::resource('carts','CartController');
 Route::post('rmProduct','CartController@rmProduct');
 Route::post('chageQuatyProduct','CartController@chageQuatyProduct');
 
+
+
 // Test
 Route::get('test', function() {
-    return view('users.cart');
+    return view('users.order_history');
 });
 Route::middleware(['first', 'second'])->group(function () {
     Route::get('/buy', function () {

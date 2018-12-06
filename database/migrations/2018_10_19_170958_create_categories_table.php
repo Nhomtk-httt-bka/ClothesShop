@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->string('category_name');
             $table->text('category_description');
+            $table->tinyInteger('status')->default(1);
             $table->string('category_url')->unique();
         });
     }

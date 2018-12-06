@@ -20,7 +20,8 @@ class CreateProductsTable extends Migration
             $table->string('product_url');
             $table->unsignedInteger('category_id');
             $table->integer('product_quantity');
-            $table->tinyInteger('product_rate');
+            // SL number of user rate product
+            $table->integer('product_rate')->default(0);
             $table->float('product_price',8,2);
             $table->tinyInteger('product_condition')->default(1);
             $table->string('product_keyword');

@@ -43,11 +43,11 @@
         <div class="col-sm-9">
 			<ul class="nav nav-tabs" role="tablist">
 				<li class="nav-item">
-					<a href="#profile" class="nav-link active" data-toggle="tab"><i class="fa fa-address-book"></i> Profile </a>
+					<a href="#profile" class="nav-link active" data-toggle="tab"><i class="fa fa-address-book"></i> Đơn hàng </a>
 				</li>
 
 				<li class="nav-item">
-					<a href="#update" class="nav-link" data-toggle="tab"><i class="fa fa-cog"></i> Update</a>
+					<a href="#update" class="nav-link" data-toggle="tab"><i class="fa fa-cog"></i> Rate</a>
 				</li>
 				<li class="nav-item">
 					<a href="#reset" class="nav-link" data-toggle="tab">Reset Password</a>
@@ -56,30 +56,7 @@
 			</ul>
 			<div class="tab-content">
 				<div id="profile" class="container tab-pane active"><br/>
-              		<div class="form-group row">
-					    <label for="email" class="col-sm-2 col-form-label"><h4>Email</h4></label>
-					    <div class="col-sm-10">
-					      <input type="text" readonly class="form-control-plaintext" id="email" value="{{ Auth::user()->email }}">
-					    </div>
-					</div>
-					<div class="form-group row">
-					    <label for="first_name" class="col-sm-2 col-form-label"><h4>First Name</h4></label>
-					    <div class="col-sm-10">
-					      <input type="text" readonly class="form-control-plaintext" id="first_name" value="{{ Auth::user()->first_name }}">
-					    </div>
-					</div>
-					<div class="form-group row">
-					    <label for="last_name" class="col-sm-2 col-form-label"><h4>Last Name</h4></label>
-					    <div class="col-sm-10">
-					      <input type="text" readonly class="form-control-plaintext" id="last_name" value="{{ Auth::user()->last_name }}">
-					    </div>
-					</div>
-					<div class="form-group row">
-					    <label for="user_phone" class="col-sm-2 col-form-label"><h4>User phone</h4></label>
-					    <div class="col-sm-10">
-					      <input type="text" readonly class="form-control-plaintext" id="user_phone" value="{{ Auth::user()->user_phone }}">
-					    </div>
-					</div>
+              		
 					<div class="form-group row">
 					    <label for="user_address" class="col-sm-2 col-form-label"><h4>User address</h4></label>
 					    <div class="col-sm-10">
