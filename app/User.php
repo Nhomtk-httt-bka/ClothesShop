@@ -35,4 +35,9 @@ class User extends Authenticatable
         return $this->belongsToMany('App\models\Products','carts','user_id','product_id')->withPivot('quantity');
     }
 
+    public function orders()
+    {
+        return $this->hasManyThrough('App\models\Orders', 'App\models\Transactions', 'user_id', 'transaction_id');
+    }
+
 }

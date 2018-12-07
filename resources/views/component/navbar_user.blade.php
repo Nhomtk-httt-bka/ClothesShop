@@ -1,10 +1,15 @@
 <!-- Navigation -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="{{ url('home') }}"><i class="fa fa-home"></i> Home</a>
-    <form class="form-inline" action="" method="post">
-      <input class="form-control mr-sm-1" type="text" placeholder="Search" size="70px;">
-      <button class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
-    </form>
+    @if(Request::is('home'))
+      <div class="col-md-8">
+        <input id="search" class="form-control mr-sm-1" type="text" placeholder="Search" size="20">
+      </div>
+        
+        
+        
+      
+    @endif
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -15,18 +20,6 @@
         </li>
         
         
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Other Pages
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-            <a class="dropdown-item" href="full-width.html">Full Width Page</a>
-            <a class="dropdown-item" href="sidebar.html">Sidebar Page</a>
-            <a class="dropdown-item" href="faq.html">FAQ</a>
-            <a class="dropdown-item" href="404.html">404</a>
-            <a class="dropdown-item" href="pricing.html">Pricing Table</a>
-          </div>
-        </li> -->
         @auth
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -34,6 +27,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
               <a class="dropdown-item" href="{{ url('users/'. Auth::user()->id) }}"><i class="fa fa-id-card"></i> Profile</a>
+              <a class="dropdown-item" href="{{ url('order_history') }}"><i class="fa fa-shopping-basket"></i> My order</a>
               
               <a class="dropdown-item" href="{{ url('logout') }}">Logout</a>
             </div>

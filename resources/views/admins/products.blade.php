@@ -68,7 +68,7 @@
               </div>          
               <div class="form-group">
                 <div class="form-label-group">
-                  <input name="product_content" type="text" id="content" class="form-control" placeholder="Product content" required="required" autofocus="autofocus">
+                  <input name="product_content" type="text" id="content" class="form-control" placeholder="Product content" required="required" autofocus="autofocus" maxlength="100">
                   <label for="content">Product Content</label>
                 </div>
               </div>

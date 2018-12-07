@@ -31,10 +31,9 @@
           
           <ul class="list-group">
             <li class="list-group-item text-muted">Quản lý <i class="fa fa-dashboard fa-1x"></i></li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Thông tin cá nhân</strong>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Đơn hàng của tôi</strong></span> 13</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong><a href="{{ url('users/'. Auth::user()->id )}}">Thông tin cá nhân</a></strong>
+            <li class="list-group-item text-right"><span class="pull-left"><a href="{{ url('order_history') }}">Đơn hàng của tôi</a></span> {{ Auth::user()->orders->count() }}</li>
+            
           </ul> 
                
           

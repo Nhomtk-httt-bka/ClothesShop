@@ -95,9 +95,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Category::destroy($id);
+
+        $category = Category::find($id);
+        if($request->status == 0){
+            $category->status = 1;    
+        }else{
+            $category->status = 0; 
+        }
+        $category->save();
         return redirect('categories');
     }
 }

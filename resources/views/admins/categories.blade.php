@@ -67,14 +67,26 @@
                    <td>{{ $category->category_url }}</td>
                    <td>
                      <form action="categories/{{ $category->id }}" method="post">
+                        @method('DELETE')
                         @csrf
-                        <input name="_method" type="hidden" value="DELETE">
-                        <button class="btn text-white bg-danger clearfix small z-1" type="submit">Delete Category     
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <span class="">
-                            <i class="fas fa-angle-right"></i>
-                          </span>
-                        </button>
+                        
+                        <input name="status" type="hidden" value="{{ $category->status }}">
+                        @if( $category->status == 1)
+                          <button class="btn text-white bg-danger clearfix small z-1" type="submit">Block Category     
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="">
+                              <i class="fas fa-angle-right"></i>
+                            </span>
+                          </button>         
+                        @else
+                          <button class="btn text-white bg-primary clearfix small z-1" type="submit">Active Category     
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="">
+                              <i class="fas fa-angle-right"></i>
+                            </span>
+                          </button>
+                        @endif
+                        
                       </form>
                    </td>
                    <td>

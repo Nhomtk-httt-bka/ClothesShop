@@ -48,6 +48,7 @@ Route::resource('home','HomeController');
 Route::get('product/{id}','HomeController@showProduct');
 Route::get('category/{id}','HomeController@showCategory');
 Route::get('about','HomeController@about');
+Route::get('search','HomeController@search');
 
 
 // User
@@ -59,10 +60,16 @@ Route::get('logout', 'UserController@doLogout');
 // Redirect to login
 Route::middleware('user_auth')->group(function(){
 	Route::get('changePassword', 'UserController@changePassword');
+	Route::get('order_history', 'UserController@order_history');
+
 	Route::resource('comments','CommentController');
 	
+	// shopping Cart
 	Route::get('shopCarts', 'CartController@shopCarts');
 	Route::post('checkout', 'CartController@checkout');
+
+	// Rating Product
+	Route::post('rating', 'RateController@rating');
 });
 
 // Cart

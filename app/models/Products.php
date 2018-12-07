@@ -18,5 +18,10 @@ class products extends Model
     {
         return $this->belongsToMany('App\User','carts','product_id','user_id')->withPivot('quantity');
     }
+
+    public function orders(){
+        return $this->hasMany('App\models\Orders','product_id');    
+    }
+    
     
 }

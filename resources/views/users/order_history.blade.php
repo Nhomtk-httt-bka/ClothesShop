@@ -2,7 +2,9 @@
 
 
 @section('content')
+	<link href="{{ asset('css/rate.css') }}" rel="stylesheet">
 	
+
 	<div class="container bootstrap snippet">
 		@if($errors->any())
           <div class="alert alert-danger alert-block">
@@ -31,10 +33,9 @@
           
           <ul class="list-group">
             <li class="list-group-item text-muted">Quản lý <i class="fa fa-dashboard fa-1x"></i></li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Thông tin cá nhân</strong>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Đơn hàng của tôi</strong></span> 13</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
+            <li class="list-group-item text-right"><span class="pull-left"><a href="{{ url('users/'. Auth::user()->id )}}">Thông tin cá nhân</a>
+            <li class="list-group-item text-right"><span class="pull-left"><strong><a href="{{ url('order_history') }}">Đơn hàng của tôi</a></strong></span></li>
+            
           </ul> 
                
           
@@ -43,186 +44,122 @@
         <div class="col-sm-9">
 			<ul class="nav nav-tabs" role="tablist">
 				<li class="nav-item">
-					<a href="#profile" class="nav-link active" data-toggle="tab"><i class="fa fa-address-book"></i> Đơn hàng </a>
+					<a href="#profile" class="nav-link active" data-toggle="tab"><i class="fa fa-shopping-basket"></i> Đơn hàng </a>
 				</li>
 
-				<li class="nav-item">
-					<a href="#update" class="nav-link" data-toggle="tab"><i class="fa fa-cog"></i> Rate</a>
-				</li>
-				<li class="nav-item">
-					<a href="#reset" class="nav-link" data-toggle="tab">Reset Password</a>
-				</li>
+				
 				
 			</ul>
 			<div class="tab-content">
 				<div id="profile" class="container tab-pane active"><br/>
               		
-					<div class="form-group row">
-					    <label for="user_address" class="col-sm-2 col-form-label"><h4>User address</h4></label>
-					    <div class="col-sm-10">
-					      <input type="text" readonly class="form-control-plaintext" id="user_address" value="{{ Auth::user()->user_address }}">
-					    </div>
-					</div>					
-					
-				</div>
-				<div id="update" class="container tab-pane fade"><br/>
-					<form class="form" action="{{ url('users/'.Auth::user()->id ) }}" method="post" id="registrationForm" enctype="multipart/form-data">
-						@method('PUT')
-						@csrf
-		                <script>
-		                  $(document).ready(function() {
-		                      var brand = document.getElementById('logo-id');
-		                      brand.className = 'attachment_upload';
-		                      brand.onchange = function() {
-		                          document.getElementById('fakeUploadLogo').value = this.value.substring(12);
-		                      };
+          			<table class="table table-hover">
+					  <thead>
+					    <tr>
+					      <th scope="col">#</th>
+					      <th scope="col" class="w-25">Tên sản phẩm</th>
+					      <th scope="col">Số lượng</th>
+					      <th scope="col">Trạng thái đơn hàng</th>
+					      <th scope="col">Đánh giá</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    @foreach( Auth::user()->orders as $order)
+						    
+						    <tr>
 
-		                      // Source: http://stackoverflow.com/a/4459419/6396981
-		                      function readURL(input) {
-		                          if (input.files && input.files[0]) {
-		                              var reader = new FileReader();
-		                              
-		                              reader.onload = function(e) {
-		                                  $('.img-preview').attr('src', e.target.result);
-		                              };
-		                              reader.readAsDataURL(input.files[0]);
-		                          }
-		                      }
-		                      $("#logo-id").change(function() {
-		                          readURL(this);
-		                      });
-		                  });
-		                </script>
-		                <style>
-		                  
-		                  .btn-danger {
-		                      background-color: #B73333;
-		                  }
+						      <th scope="row"><img src="{{ asset('img/products/'.$order->product->product_image) }}" alt="product" width="55px;" height="55px;"></th>
+						      <td>{{ $order->product->product_name}}</td>
+						      <td>{{ $order->quantity }}</td>
+						      <td scope="row">
+								@if( $order->status == 1 )
+									Đang xử lý
+								@elseif( $order->status == 2 )
+									Đang giao hàng
+								@else
+									Đã hoàn thành
+								@endif
+						      </td>
+						      <td>
+						      	<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#rate_for{{ $order->id }}"><i class="fa fa-thumbs-up"></i> Đánh giá</button>
+								<!-- The Modal -->
+							    <div class="modal fade" id="rate_for{{ $order->id }}">
+							      <div class="modal-dialog modal-lg">
+							        <div class="modal-content">
+							          <!-- Modal header -->
+							          <div class="modal-header">
+							            <h4 class="modal-title">Đánh giá</h4>
+							            <button type="button" class="close" data-dismiss="modal">&times;</button>
+							          </div>
+							          <!-- Modal body -->
+							          <div class="modal-body">
+							          		<h4>Cám ơn quý khách đã hàng ngày {{ $order->created_at }} </h4>
 
-		                  /* File Upload */
-		                  .fake-shadow {
-		                      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-		                  }
-		                  .fileUpload {
-		                      position: relative;
-		                      overflow: hidden;
-		                  }
-		                  .fileUpload #logo-id {
-		                      position: absolute;
-		                      top: 0;
-		                      right: 0;
-		                      margin: 0;
-		                      padding: 0;
-		                      font-size: 33px;
-		                      cursor: pointer;
-		                      opacity: 0;
-		                      filter: alpha(opacity=0);
-		                  }
-		                  .img-preview {
-		                      width: 350px;
-		                      height: 350px;
-		                  }
-		                </style>
-		                <div>
-		                    <h3 class="">Preview an image before it is uploaded</h3>
-		                    <hr />
-		                    <div class="text-center">
-		                      <div class="form-group">
-		                            <div class="align-items-md-center">
-		                              <img class="rounded-circle img-preview" src="{{ asset('img\products\noimagefound.png')}}" title="Preview Logo">
-		                            </div>
-		                            <div>
-		                              <input id="fakeUploadLogo" class="form-control fake-shadow" placeholder="Choose File" disabled="disabled" name="product_image">
-		                              <br>
-		                              <div class="fileUpload btn btn-danger fake-shadow">
-		                                <span><i class="fa fa-upload"></i> Upload load </span>
-		                                <input id="logo-id" name="logo" type="file" class="attachment_upload">
-		                              </div>
-		                              
-		                            </div>
-		                            
-		                      </div>
-		                    </div>
-		                </div>
-	                  	<div class="form-group">  
-	                      	<div class="col-xs-6">
-	                          	<label for="email"><h4>Email</h4></label>
-	                          	<input type="email" class="form-control" name="email" id="email" value="{{Auth::user()->email }}" name="email" title="enter your email.">
-	                      	</div>
-	                  	</div>
-	                  	<div class="form-group">
-	                      	<div class="col-xs-6">
-	                          	<label for="username"><h4>User name</h4></label>
-	                          	<input type="text" class="form-control" name="username" id="username" value="{{Auth::user()->username }}" name="username" title="enter your user name if any." required>
-	                      	</div>
-	                  	</div>
-	                  	<div class="form-group">
-	                      	<div class="col-xs-6">
-	                          	<label for="first_name"><h4>First name</h4></label>
-	                          	<input type="text" class="form-control" name="first_name" id="first_name" value="{{Auth::user()->first_name }}" name="first_name" title="enter your first name if any." required>
-	                      	</div>
-	                  	</div>
-	                 	<div class="form-group">  
-	                    	<div class="col-xs-6">
-	                        	<label for="last_name"><h4>Last name</h4></label>
-	                          	<input type="text" class="form-control" name="last_name" id="last_name" value="{{Auth::user()->last_name }}" name="last_name" title="enter your last name if any." required>
-	                      	</div>
-	                  	</div>
-	      
-	                  	<div class="form-group">
-	                      	<div class="col-xs-6">
-	                          	<label for="phone"><h4>Phone Number</h4></label>
-	                          	<input type="number" class="form-control" name="user_phone" id="phone" value="{{Auth::user()->user_phone }}" name="user_phone" title="enter your phone number if any." required>
-	                      	</div>
-	                  	</div>
-	                  	
-	                  	
-	                  	<div class="form-group">
-	                      	<div class="col-xs-6">
-	                          	<label for="location"><h4>Location</h4></label>
-	                          	<input type="text" class="form-control" name="user_address" id="location" value="{{Auth::user()->user_address }}" name="user_address" title="enter a location" required>
-	                      	</div>
-	                  	</div>
-	                  	
-	                  	<div class="form-group">
-	                       <div class="col-xs-12">
-	                            <br>
-	                          	<button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-	                           	<button class="btn btn-lg btn-secondary" type="reset" name="reset">Reset</button>	
-	                        </div>
-	                  	</div>
-	          		</form>
-				</div>
-				<div id="reset" class="container tab-pane fade">
-					<form action="{{ url('changePassword') }}" id="changePass" name="changePass">
-						@csrf
-						<input type="hidden" value="{{ Auth::user()->id }}" name="id" id="id">
-	                  	<div class="form-group">
-	                      	<div class="col-xs-6">
-	                          	<label for="new_password"><h4>New Password</h4></label>
-	                          	<input type="password" class="form-control" name="new_password" id="new_password"  required>
-	                      	</div>
-	                  	</div>
-	                  	<div class="clearfix" style="height: 10px;clear: both;"></div>
+											Nhận xét và đánh giá sản phẩm đã mua (5 sao: Rất Tốt - 1 sao: Rất Tệ)
+							          		<form action="{{ url('rating') }}" method="post" id="_for{{ $order->id }}">
+							          			@csrf
+							          			<input type="hidden" name="order_id" value="{{ $order->id }}">
+							          			<input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+							          			
+							          			<div class="rating">
+										          <input type="radio" id="star5_for{{ $order->id }}" name="rating" value="5" 
+										          @if($order->rate)
+										          	@if( $order->rate->rate_mark == 5) 
+										          		checked="checked" 
+										          	@endif
+										          @endif
+										          /><label for="star5_for{{ $order->id }}" title="Excelent">5 stars</label>
+										          <input type="radio" id="star4_for{{ $order->id }}" name="rating" value="4"  
+													@if($order->rate)
+											          	@if( $order->rate->rate_mark == 4) 
+											          		checked="checked" 
+											          	@endif
+											          @endif
+										          /><label for="star4_for{{ $order->id }}" title="Good">4 stars</label>
+										          <input type="radio" id="star3_for{{ $order->id }}" name="rating" value="3"
+													@if($order->rate)
+											          	@if( $order->rate->rate_mark == 3) 
+											          		checked="checked" 
+											          	@endif
+											          @endif
+										          /><label for="star3_for{{ $order->id }}" title="Fair">3 stars</label>
+										          <input type="radio" id="star2_for{{ $order->id }}" name="rating" value="2" 
+													@if($order->rate)
+											          	@if( $order->rate->rate_mark == 2) 
+											          		checked="checked" 
+											          	@endif
+											          @endif
+										          /><label for="star2_for{{ $order->id }}" title="Bad">2 stars</label>
+										          <input type="radio" id="star1_for{{ $order->id }}" name="rating" value="1" 
+													@if($order->rate)
+											          	@if( $order->rate->rate_mark == 1) 
+											          		checked="checked" 
+											          	@endif
+											          @endif
+										          /><label for="star1_for{{ $order->id }}" title="Really Bad">1 star</label>
+										        </div>
+							          		</form>
+							            	
+							          </div>
+							          <!-- Modal footer -->
+							          <div class="modal-footer">
+							          	<button class="btn btn-primary" type="submit" form="_for{{ $order->id }}"><i class="fa fa-paper-plane"></i> Gửi</button>
+							            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							          </div>
+							        </div>
+							      </div>
+							    </div>
 
+						      </td>
+						    </tr>
+					    @endforeach
+					  </tbody>
 
-	                  	<div class="form-group">
-	                      	<div class="col-xs-6">
-	                          	<label for="new_confirm"><h4>Retype new password</h4></label>
-	                          	<input type="password" class="form-control" name="new_confirm" id="new_confirm" required>
-	                      	</div>
-	                  	</div>
-						<div class="clearfix" style="height: 10px;clear: both;"></div>
-
-	                  	<div class="form-group">
-	                       <div class="col-xs-12">
-	                            <br>
-	                          	<button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Cập nhật</button>
-	                        </div>
-	                  	</div>
-					</form>
+					</table>
 						
-				</div>	
+				</div>
+				
+	
 
 				<!-- end id profile -->
 			</div>

@@ -16,7 +16,11 @@ use App\Http\Requests\StoreUserPost;
 
 class UserController extends Controller
 {
-    
+    public function order_history(){
+        return view('users.order_history');
+    }
+
+
     public function showLogin(){
         return view('users/login');
     }
