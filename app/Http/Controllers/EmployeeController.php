@@ -44,17 +44,17 @@ class EmployeeController extends Controller
 
     	$rules =[
     		'employee_name'=> 'required | min:3',
-    		'employee_phone'=> 'required | numeric',
-    		'employee_email'=>'required | email'
+    		'employee_phone'=> ['required', 'regex:/^(\\+84|0)\\d{9,10}$/'],
+    		'employee_email'=> ['required', 'regex:/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/']
     	];
 
     	$message = [
     		'employee_name.required' => '* Tên là trường bắt buộc',
     		'employee_name.min'=> '* Tên có độ dài tối thiểu là 3 ký tự',
-    		'employee_phone.required' => '* Phone là trường bắt buộc',
-    		'employee_phone.numeric' => '* Số điện thoại chỉ bao gồm các chữ số',
+    		'employee_phone.required' => '* Số điện thoại là trường bắt buộc',
+    		'employee_phone.regex' => '* Số điện thoại vừa nhập không hợp lệ',
     		'employee_email.required' => '* Email là trường bắt buộc',
-    		'employee_email.email'=> '* Email vừa nhập không đúng định dạng'
+    		'employee_email.regex'=> '* Email vừa nhập không đúng định dạng'
     	];
 
     	$validator = Validator::make($request->all(), $rules, $message);
@@ -63,23 +63,19 @@ class EmployeeController extends Controller
     		return redirect()->back()->withErrors($validator)->withInput();
     	}
     	else{
-    		$msg_name = '* Tên đăng nhập đã tồn tại';
+    		
     		$msg_phone = '* Số điện thoại đã tồn tại';
     		$msg_email = '* Email đã tồn tại';
 
-  			$name = $request->employee_name;
+  			
   			$phone = $request->employee_phone;
   			$email = $request->employee_email;
 
-  			if(count(Admin::all()->where('admin_name', $name)) != 0)
-  				return view('admins/employees', ['message'=>$msg_name, 'employees' => $all_employee]);
-
   			if(count(Admin::all()->where('admin_email', $email)) != 0)
-  				return view('admins/employees', ['message'=>$msg_email, 'employees' => $all_employee]);
+  				return redirect()->back()->withErrors(['message'=>$msg_email])->withInput();
 
   			if(count(Admin::all()->where('admin_phone', $phone)) != 0)
-  				return view('admins/employees', ['message'=>$msg_phone, 'employees' => $all_employee]);
-
+  				return redirect()->back()->withErrors(['message'=>$msg_phone])->withInput();
 
         	Admin::create([
             'admin_name' => $name,

@@ -6,16 +6,16 @@
     <div class="card mb-3">
       <div class="card-header">
         <i class="fas fa-table"></i>
-        List Employee</div>
+        Danh sách người bán hàng</div>
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>Họ tên</th>
                 <th>Email</th>
-                <th>Phone</th>
+                <th>Số điện thoại</th>
                 <th></th>
                 <th></th>
               </tr>
@@ -31,7 +31,7 @@
 
                    	@if( $employee->admin_status == 1)
                     <a class="btn text-white bg-danger clearfix small z-1" href="{{ url('employees/block/'.$employee->id) }}">
-                        Block
+                        Khóa
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
@@ -39,7 +39,7 @@
                       </a>
                       @else
                       <a class="btn text-white bg-success clearfix small z-1" href="{{ url('employees/unblock/'.$employee->id) }}">
-                        Unblock
+                        Bỏ khóa
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
@@ -50,7 +50,7 @@
                    </td>
                    <td>
                       <button class="btn text-white bg-info clearfix small z-1" onclick="get_employee_detail(<?php echo $employee->id; ?>)" >
-                        View Details    
+                        Xem chi tiết    
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
@@ -69,8 +69,9 @@
 
   	<!-- Add employee-->
   	<div class="card mx-auto mt-6">
-      <div class="card-header"><b>CREATE EMPLOYEE</b></div>
-      @if($errors->has('employee_name'))
+      <div class="card-header"><b>Thêm người bán hàng</b></div>
+
+      		@if($errors->has('employee_name'))
 			 			<p style="color: red">{{$errors->first('employee_name')}}</p>
 			 		@endif
 			@if($errors->has('employee_email'))
@@ -79,9 +80,11 @@
 			@if($errors->has('employee_phone'))
 			 			<p style="color: red">{{$errors->first('employee_phone')}}</p>
 			 		@endif
-        	@if(isset($message))
-			 			<p style="color: red">{{$message}}</p>
+			 @if($errors->has('message'))
+			 			<p style="color: red">{{$errors->first('message')}}</p>
 			 		@endif
+		
+        	
       <form action="{{ url('employees') }}" method="post"> 
         @csrf
         <div class="card-body text-center">
@@ -89,7 +92,7 @@
           	<div class="form-group">
             	<div class="form-label-group">
               		<input name="employee_name" type="text" id="name" class="form-control" placeholder="Employee name" required="required" autofocus="autofocus" value="{{old('employee_name')}}">
-              		<label for="name">Name</label>
+              		<label for="name">Họ tên</label>
             	</div>
         	</div>
         
@@ -105,13 +108,13 @@
         	<div class="form-group">
             	<div class="form-label-group">
               		<input name="employee_phone" type="text" id="phone" class="form-control" placeholder="Phone" required="required" autofocus="autofocus" value="{{old('employee_phone')}}">
-              		<label for="phone">Phone</label>
+              		<label for="phone">Số điện thoại</label>
             	</div>
         	</div>
         </div>
         <div class="form-group">
         	<div class="form-lable-group">
-        		<label style="padding-left: 20px; color: green">Note: Default password is 123</label>
+        		<label style="padding-left: 20px; color: green">Ghi chú: Mật khẩu mặc định là 123</label>
         	</div>
         </div>
   		
@@ -119,7 +122,7 @@
        
         	<div class="card-footer text-right">
         		
-          <button type="submit" class="btn btn-success text-right" style="font-size: 30px">   <i class="fas fa-save"> Save</i></button>
+          <button type="submit" class="btn btn-success text-right" style="font-size: 30px">   <i class="fas fa-save"> Lưu</i></button>
         </div>
      
       </form>
