@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\models\Products;
 use App\models\Category;
 use App\User;
+
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -18,8 +20,8 @@ class HomeController extends Controller
     }
     public function index()
     {
-        $products = Products::paginate(3);
-        $categories = Category::all('id','category_name');
+        $products = Products::paginate(12);
+        $categories = Category::all('id','category_name','status');
         return view('users/home',['products'=> $products, 'categories' => $categories]);
     }
     public function showProduct($id){
@@ -42,69 +44,41 @@ class HomeController extends Controller
         return view('users.category',['category' => $category]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    public function search(Request $request){
+        if($request->ajax()){
+            $output="";
+            $products = Products::where('product_name','LIKE','%'.$request->search."%")
+            ->get();
+            if($request->search == null)
+                return Response($output);
+            if($products){
+                foreach ($products as  $product) {
+                    $sub = substr($product->product_price,-3);
+                    $pre = substr($product->product_price,0,-3);
+                    $price = $pre . '.' .$sub;
+                    $output.= '<div class="col-lg-3 col-sm-6 ">
+                        <div class="card h-100">
+                          <a href="product/'. $product->id .'"><img class="card-img-top" src="img/products/'. $product->product_image .'" alt="product" height="250">
+                            <div class="card-body">
+                              <h5 class="card-title">
+                                '. $product->product_name .'
+                              </h5>
+                              <small class="text-muted">
+                                <p class="card-text" style="color: red"><b>Price: </b>'. $price  .'Đ</p>
+                                <p class="card-text"><b>SL đơn đặt hàng: </b>'. $product->orders->count() .'</p>  
+                              </small>
+                              
+                            </div>
+                          </a>
+                          
+                        </div>
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+                      </div>';
+                    
+                }
+                return Response($output);
+            }
+        }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
 }

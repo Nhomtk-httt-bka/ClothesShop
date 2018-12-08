@@ -28,17 +28,12 @@
       <div class="text-center">
         <img src="{{ asset('storage/' . Auth::user()->user_image) }}" class="avatar img-circle img-thumbnail" alt="avatar">
       </div></hr><br> 
-          <div class="panel panel-default">
-            <div class="panel-heading">Website</div>
-          </div>
-          
           
           <ul class="list-group">
-            <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
+            <li class="list-group-item text-muted">Quản lý <i class="fa fa-dashboard fa-1x"></i></li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong><a href="{{ url('users/'. Auth::user()->id )}}">Thông tin cá nhân</a></strong>
+            <li class="list-group-item text-right"><span class="pull-left"><a href="{{ url('order_history') }}">Đơn hàng của tôi</a></span> {{ Auth::user()->orders->count() }}</li>
+            
           </ul> 
                
           
