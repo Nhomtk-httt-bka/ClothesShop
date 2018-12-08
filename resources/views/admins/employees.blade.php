@@ -109,11 +109,19 @@
             	</div>
         	</div>
         </div>
-
-        
-        <div class="card-footer text-right">
-          <button type="submit" class="btn btn-success" style="font-size: 30px">   <i class="fas fa-save"> Save</i></button>
+        <div class="form-group">
+        	<div class="form-lable-group">
+        		<label style="padding-left: 20px; color: green">Note: Default password is 123</label>
+        	</div>
         </div>
+  		
+        		
+       
+        	<div class="card-footer text-right">
+        		
+          <button type="submit" class="btn btn-success text-right" style="font-size: 30px">   <i class="fas fa-save"> Save</i></button>
+        </div>
+     
       </form>
 
     </div>
