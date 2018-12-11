@@ -67,7 +67,7 @@
 				
 			</div>		
 			<div class="col-md-2">
-				<h4>Sidebar ckeckout</h4>
+				
 			</div>
 		</div>
 

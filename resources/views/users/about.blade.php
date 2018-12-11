@@ -15,8 +15,9 @@
                   <span class="section-heading-upper">Group BKA Clothes Shop</span>
                   <span class="section-heading-lower">About Our Shop</span>
                 </h2>
-                <p>Founded in 1987 by the Binh Minh, our establishment has been serving up rich clothes sourced from artisan farmers in various regions of South and Central America. We are dedicated to travelling the world, finding the best resource, and bringing back to you here in our shop.</p>
-                <p class="mb-0">We guarantee that you will fall in <em>lust</em> with our decadent blends the moment you walk inside until you finish your last sip. Join us for your daily routine, an outing with friends, or simply just to enjoy some alone time.</p>
+                <p>Mua hàng trực tuyến (mua hàng online) mang lại sự tiện lợi, lựa chọn đa dạng hơn và các dịch vụ tốt hơn cho người tiêu dùng, thế nhưng người tiêu dùng Việt Nam vẫn chưa tận hưởng được những tiện ích đó. Chính vì vậy ShopClothes Việt Nam được triển khai với mong muốn trở thành trung tâm mua sắm trực tuyến số 1 tại Việt Nam, nơi bạn có thể chọn lựa mọi thứ, từ các mặt hàng điện tử như laptop, điện thoại di động giá rẻ, thiết bị gia dụng như máy lạnh, máy lọc không khí, máy hút bụi mini gia đình, nội thất phòng ngủ… Chúng tôi có tất cả!
+
+                Tại ShopClothes.vn bạn có thể mua đồ điện tử giá rẻ, cũng như các loại mặt hàng khác với rất nhiều các chương trình khuyến mãi hàng tháng. Ngoài ra bạn cũng có thể tham gia bán hàng trực tuyến thông qua hệ thống marketplace của ShopClothes với rất nhiều hỗ trợ và dịch vụ hấp dẫn. Bây giờ bạn có thể trải nghiệm mua hàng online thỏa thích mà ShopClothes mang lại chỉ với 1 click chuột. Dù bạn là một nhà quản lý bận rộn với công việc hay là người nội trợ với danh sách dài việc phải làm, chắc chắn bạn cũng sẽ yêu thích trải nghiệm mua hàng tại ShopClothes Việt Nam - mua hàng trực tuyến dễ dàng hơn, thuận tiện hơn và tiết kiệm thời gian.</p>
               </div>
             </div>
           </div>
