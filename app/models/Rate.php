@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rate extends Model
 {
+	public $fillable = ['product_id','user_id','rate_mark'];
     protected $table= "rates";
-    public $fillable = ['order_id','user_id','rate_mark'];
 	public $timestamps = false;
 
 	public function users(){
@@ -16,6 +16,7 @@ class Rate extends Model
 	public function orders(){
 		return $this->hasMany('App\models\Orders');
 	}
-
-	
+	public function transactions(){
+		return $this->hasMany('App\models\Transactions');
+	}
 }
