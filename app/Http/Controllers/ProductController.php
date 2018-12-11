@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 use App\models\Products;
 use App\models\Category;
+use App\models\Rate;
+use App\models\Orders;
+use App\models\Transactions;
+use App\models\Cart;
+use App\models\Comments;
+use App\models\Order_histories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -142,7 +148,56 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        // get all record table orders where products.product_id = orders.id
+        $order = Orders::where('product_id',$id);
+        // get 1 record table orders where products.product_id = orders.id
+        $orderfirst = Orders::where('product_id',$id)->first();
+        if($orderfirst) {
+            // get id
+            $orderId = $orderfirst->id;
+
+            // delete record table order_histories where order_histrories.order_id = orders.id
+            $orderhistory = Order_histories::where('order_id',$orderId);
+            if($orderhistory) {
+                $orderhistory->delete();
+            }
+
+            // get transaction_id
+            $transactionId = $orderfirst->transaction_id;
+                
+            // delete record table orders where products.product_id = orders.id
+            if($order){
+                $order->delete();
+            }
+
+            // delete record table trasactions where transactions.id = orders.transaction_id
+            $transaction = Transactions::where('id',$transactionId);
+            if($transaction) {
+                $transaction->delete();
+            }
+        }
+
+        // delete record table rate where rate.product_id = products.id
+        $rate = Rate::where('product_id',$id);
+        if($rate){
+            $rate->delete();
+        }
+
+        // delete record table carts where carts.product_id = products.id
+        $cart = Cart::where('product_id',$id);
+        if($cart){
+            $cart->delete();
+        }
+
+        // delete record table comments where carts.product_id = products.id
+        $comment = Comments::where('product_id',$id);
+        if($comment){
+            $comment->delete();
+        }
+
+        // delete record table products
         Products::destroy($id);
+
         return redirect('products');
     }
 }
