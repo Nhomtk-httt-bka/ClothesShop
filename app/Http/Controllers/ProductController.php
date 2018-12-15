@@ -44,35 +44,28 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product_name = $request->product_name;
-        $productByName = Products::where('product_name', $product_name)->first();
-
-        if(!is_null($productByName)) {
-            return Redirect::back()->with('error', '* Product name already existed');
-        } else {
-                request()->validate([
-                'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        request()->validate([
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        if ($request->file('logo')) {
+            $imageName = request()->logo->getClientOriginalName() .'-'. time().'.'. request()->logo->getClientOriginalExtension();
+            request()->logo->move(public_path('img/products'), $imageName);
+            Products::create([
+                'product_name' => $request->product_name,
+                'product_description' => $request->product_description,
+                'product_url' => $request->product_url,
+                'category_id' => $request->category_id,
+                'product_quantity' => $request->product_quantity,
+                'product_price' => $request->product_price,
+                'product_condition' => $request->product_condition,
+                'product_keyword' => $request->product_keyword,
+                'product_content' => $request->product_content,
+                'product_image' => $imageName,
+                
             ]);
-            if ($request->file('logo')) {
-                $imageName = request()->logo->getClientOriginalName() .'-'. time().'.'. request()->logo->getClientOriginalExtension();
-                request()->logo->move(public_path('img/products'), $imageName);
-                Products::create([
-                    'product_name' => $request->product_name,
-                    'product_description' => $request->product_description,
-                    'product_url' => $request->product_url,
-                    'category_id' => $request->category_id,
-                    'product_quantity' => $request->product_quantity,
-                    'product_price' => $request->product_price,
-                    'product_condition' => $request->product_condition,
-                    'product_keyword' => $request->product_keyword,
-                    'product_content' => $request->product_content,
-                    'product_image' => $imageName,
-                    
-                ]);
-                return redirect('products')->with('success', 'Product created successfully.');
-            }
-            return Redirect::back()->withErrors(['image', 'The image null or wrong type']);
+            return redirect('products')->with('success', 'Product created successfully.');
         }
+        return Redirect::back()->withErrors(['image', 'The image null or wrong type']);
     }
 
     /**
@@ -111,19 +104,6 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $product = Products::find($id);
-        $product_name_old = $product->product_name;
-
-        $product_name = $request->product_name;
-        $productByName = Products::where('product_name', $product_name)->first();
-
-        // Check whether product_name, product_url existed ?
-        if($product_name_old != $product_name) {
-            if(!is_null($productByName)) {
-                return Redirect::back()->with('error', '* Product name already existed');
-            }
-        }
-
-        // update Product
         if ($request->file('logo')) {
             request()->validate([
             'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -201,8 +181,6 @@ class ProductController extends Controller
             // delete record table trasactions where transactions.id = orders.transaction_id
             Transactions::destroy($transactionId);
         }
-
-
 
 
         // delete record table carts where carts.product_id = products.id

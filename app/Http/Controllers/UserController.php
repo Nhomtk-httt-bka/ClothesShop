@@ -176,12 +176,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        if(Auth::check()){
-            return view('users/profile');    
-        }else{
-            return redirect('login');
-        }
-        
+        return view('users/profile');
     }
 
     /**

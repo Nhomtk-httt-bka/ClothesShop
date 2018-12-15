@@ -2,18 +2,6 @@
 
 @section('content')
     <div class="card mx-auto mt-10">
-      @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-block">
-          <button type="button" class="close" data-dismiss="alert">×</button>
-          <strong>{{ $message }}</strong>
-        </div>
-      @endif
-      @if ($message = Session::get('error'))
-        <div class="alert alert-success alert-block">
-          <button type="button" class="close" data-dismiss="alert">×</button>
-          <strong><p style="color: red">{{ $message }}</p></strong>
-        </div>
-      @endif
       <div class="card-header"><i class="fas fa-edit"></i>  Update Category</div>
       <form action="{{ url('categories/'.$category->id) }}" method="post"> 
         @csrf
