@@ -2,6 +2,18 @@
 
 @section('content')
       <div class="card-header">Form update Product</div>
+      @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-block">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>{{ $message }}</strong>
+        </div>
+      @endif
+      @if ($message = Session::get('error'))
+        <div class="alert alert-success alert-block">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong><p style="color: red">{{ $message }}</p></strong>
+        </div>
+      @endif
       <form action="{{ url('products/'.$product->id) }}" method="post" enctype="multipart/form-data"> 
         @method('PUT')
         @csrf
