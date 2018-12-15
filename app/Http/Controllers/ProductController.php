@@ -183,6 +183,8 @@ class ProductController extends Controller
         }
 
 
+
+
         // delete record table carts where carts.product_id = products.id
         $cart = Cart::where('product_id',$id);
         if($cart){
