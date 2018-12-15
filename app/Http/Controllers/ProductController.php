@@ -176,9 +176,9 @@ class ProductController extends Controller
                 $transaction->delete();
             }
         }
-
+        
         // delete record table rate where rate.product_id = products.id
-        $rate = Rate::where('product_id',$id);
+        $rate = Rate::where('order_id',$id);
         if($rate){
             $rate->delete();
         }

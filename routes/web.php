@@ -20,6 +20,8 @@ Route::resource('admins', 'AdminController');
 Route::prefix('admin')->group(function(){
 	Route::middleware('admin_auth')->group(function(){
 		Route::get('dashboard', 'AdminController@showDashboard');
+		
+
 	});
 	Route::post('login','AdminController@checkAuth');
 	
@@ -27,13 +29,11 @@ Route::prefix('admin')->group(function(){
 		auth('admin')->logout();
     	return redirect('admins/');
 	});
+
+	
 });
 
-Route::middleware('admin_auth')->group(function(){
-	Route::resource('categories','CategoryController');
-	Route::resource('products','ProductController');
-	Route::resource('employees','EmployeeController');
-});
+
 
 
 Route::get('employees/block/{id}', 'EmployeeController@blockEmployee');
@@ -62,15 +62,28 @@ Route::middleware('user_auth')->group(function(){
 	Route::get('changePassword', 'UserController@changePassword');
 	Route::get('order_history', 'UserController@order_history');
 
+	// detail profile user
 	Route::resource('comments','CommentController');
-	
+	Route::get('users/{id}','UserController@show');
+
+
 	// shopping Cart
 	Route::get('shopCarts', 'CartController@shopCarts');
 	Route::post('checkout', 'CartController@checkout');
 
 	// Rating Product
 	Route::post('rating', 'RateController@rating');
+
 });
+
+// Redirect to login if admin not authen
+Route::middleware('admin_auth')->group(function(){
+	Route::resource('categories','CategoryController');
+	Route::resource('products','ProductController');
+	Route::resource('employees','EmployeeController');
+	Route::get('users', 'UserController@index');
+});
+
 
 // Cart
 Route::resource('carts','CartController');
