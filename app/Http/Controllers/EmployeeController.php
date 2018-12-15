@@ -67,7 +67,7 @@ class EmployeeController extends Controller
     		$msg_phone = '* Số điện thoại đã tồn tại';
     		$msg_email = '* Email đã tồn tại';
 
-  			
+  			$name = $request->employee_name;
   			$phone = $request->employee_phone;
   			$email = $request->employee_email;
 

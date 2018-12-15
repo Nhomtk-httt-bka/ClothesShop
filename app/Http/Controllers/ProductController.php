@@ -148,13 +148,15 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        // get all record table orders where products.product_id = orders.id
-        $order = Orders::where('product_id',$id);
-        // get 1 record table orders where products.product_id = orders.id
-        $orderfirst = Orders::where('product_id',$id)->first();
-        if($orderfirst) {
-            // get id
-            $orderId = $orderfirst->id;
+        // get all record table orders where products.id = orders.product_id
+        $orders = Orders::where('product_id',$id)->get();
+
+        foreach($orders as $order) {
+            // get order_id
+            $orderId = $order->id;
+
+            // get transaction_id
+            $transactionId = $order->transaction_id;
 
             // delete record table order_histories where order_histrories.order_id = orders.id
             $orderhistory = Order_histories::where('order_id',$orderId);
@@ -162,26 +164,26 @@ class ProductController extends Controller
                 $orderhistory->delete();
             }
 
-            // get transaction_id
-            $transactionId = $orderfirst->transaction_id;
-                
-            // delete record table orders where products.product_id = orders.id
-            if($order){
-                $order->delete();
+
+            // delete record table rate where rate.order_id = orders.id
+            $rate = Rate::where('order_id',$orderId);
+            if($rate){
+                $rate->delete();
             }
+            
+            // delete record table orders follow transaction_id
+            $o = Orders::where('transaction_id',$transactionId);
+            if($o){
+                $o->delete();
+            }
+            // Orders::destroy($orderId);
 
             // delete record table trasactions where transactions.id = orders.transaction_id
-            $transaction = Transactions::where('id',$transactionId);
-            if($transaction) {
-                $transaction->delete();
-            }
+            Transactions::destroy($transactionId);
         }
-        
-        // delete record table rate where rate.product_id = products.id
-        $rate = Rate::where('order_id',$id);
-        if($rate){
-            $rate->delete();
-        }
+
+
+
 
         // delete record table carts where carts.product_id = products.id
         $cart = Cart::where('product_id',$id);

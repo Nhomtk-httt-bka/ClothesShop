@@ -6,16 +6,16 @@
     <div class="card mb-3">
       <div class="card-header">
         <i class="fas fa-table"></i>
-        Danh sách người bán hàng</div>
+        List of employeees</div>
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Họ tên</th>
+                <th>Name</th>
                 <th>Email</th>
-                <th>Số điện thoại</th>
+                <th>Phone Number</th>
                 <th></th>
                 <th></th>
               </tr>
@@ -31,7 +31,7 @@
 
                    	@if( $employee->admin_status == 1)
                     <a class="btn text-white bg-danger clearfix small z-1" href="{{ url('employees/block/'.$employee->id) }}">
-                        Khóa
+                        Lock
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
@@ -39,7 +39,7 @@
                       </a>
                       @else
                       <a class="btn text-white bg-success clearfix small z-1" href="{{ url('employees/unblock/'.$employee->id) }}">
-                        Bỏ khóa
+                        Unlock
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
@@ -50,7 +50,7 @@
                    </td>
                    <td>
                       <button class="btn text-white bg-info clearfix small z-1" onclick="get_employee_detail(<?php echo $employee->id; ?>)" >
-                        Xem chi tiết    
+                        View Details
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
@@ -69,7 +69,7 @@
 
   	<!-- Add employee-->
   	<div class="card mx-auto mt-6">
-      <div class="card-header"><b>Thêm người bán hàng</b></div>
+      <div class="card-header"><b>Add employee</b></div>
 
       		@if($errors->has('employee_name'))
 			 			<p style="color: red">{{$errors->first('employee_name')}}</p>
@@ -92,7 +92,7 @@
           	<div class="form-group">
             	<div class="form-label-group">
               		<input name="employee_name" type="text" id="name" class="form-control" placeholder="Employee name" required="required" autofocus="autofocus" value="{{old('employee_name')}}">
-              		<label for="name">Họ tên</label>
+              		<label for="name">Name</label>
             	</div>
         	</div>
         
@@ -108,13 +108,13 @@
         	<div class="form-group">
             	<div class="form-label-group">
               		<input name="employee_phone" type="text" id="phone" class="form-control" placeholder="Phone" required="required" autofocus="autofocus" value="{{old('employee_phone')}}">
-              		<label for="phone">Số điện thoại</label>
+              		<label for="phone">Phone Number</label>
             	</div>
         	</div>
         </div>
         <div class="form-group">
         	<div class="form-lable-group">
-        		<label style="padding-left: 20px; color: green">Ghi chú: Mật khẩu mặc định là 123</label>
+        		<label style="padding-left: 20px; color: green">*Note: Default password for new account is 123</label>
         	</div>
         </div>
   		
@@ -122,7 +122,7 @@
        
         	<div class="card-footer text-right">
         		
-          <button type="submit" class="btn btn-success text-right" style="font-size: 30px">   <i class="fas fa-save"> Lưu</i></button>
+          <button type="submit" class="btn btn-success text-right" style="font-size: 30px">   <i class="fas fa-save"> Save</i></button>
         </div>
      
       </form>
@@ -145,6 +145,10 @@
       <div class="modal-body">
 
         <form>
+        	<div class="form-group">
+            <label  class="col-form-label">ID</label>
+            <input id="inp-id" type="text" class="form-control" disabled>
+          </div>
           <div class="form-group">
             <label  class="col-form-label">Name</label>
             <input id="inp-name" type="text" class="form-control" disabled>
@@ -157,7 +161,14 @@
             <label  class="col-form-label">Phone</label>
             <input id="inp-phone" type="text" class="form-control"   disabled>
           </div>
-          
+          <div class="form-group">
+            <label  class="col-form-label">Created at</label>
+            <input id="inp-create" type="text" class="form-control" disabled>
+          </div>
+          <div class="form-group">
+            <label  class="col-form-label">Updated at</label>
+            <input id="inp-update" type="text" class="form-control" disabled>
+          </div>
         </form>
 
       </div>
@@ -181,9 +192,12 @@
     data: { 'id': id},
     success: function (result) {
     	result = JSON.parse(result);
+    	$("#inp-id").val(id)
         $("#inp-name").val(result.admin_name);
         $("#inp-email").val(result.admin_email);
         $("#inp-phone").val(result.admin_phone);
+        $("#inp-create").val(result.created_at);
+        $("#inp-update").val(result.updated_at);
         $('#exampleModal').modal('show');   
     }
 });   

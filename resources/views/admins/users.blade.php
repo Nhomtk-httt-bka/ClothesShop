@@ -6,16 +6,16 @@
     <div class="card mb-3">
       <div class="card-header">
         <i class="fas fa-table"></i>
-        Danh sách người dùng</div>
+        List of users</div>
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Họ tên</th>
+                <th>Name</th>
                 <th>Email</th>
-                <th>Số điện thoại</th>
+                <th>Phone Number</th>
                 <th></th>
                 <th></th>
               </tr>
@@ -30,7 +30,7 @@
                    <td>
                     @if($user->status == 1)
                     <a class="btn text-white bg-danger clearfix small z-1" href="{{ url('users/block/'.$user->id) }}">
-                        Khóa
+                        Lock
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
@@ -38,7 +38,7 @@
                       </a>
                     @else
                     <a class="btn text-white bg-success clearfix small z-1" href="{{ url('users/unblock/'.$user->id) }}">
-                        Bỏ khóa
+                        Unlock
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
@@ -49,7 +49,7 @@
                    </td>
                    <td>
                       <button class="btn text-white bg-info clearfix small z-1" onclick="get_user_detail(<?php echo $user->id; ?>)" >
-                        Xem chi tiết    
+                        View Details    
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="">
                           <i class="fas fa-angle-right"></i>
