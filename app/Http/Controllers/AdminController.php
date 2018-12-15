@@ -24,7 +24,7 @@ class AdminController extends Controller
             'password'=>$request->password,
         ];
         if(Auth::guard('admin')->attempt($credential)){
-            return redirect('admin/dashboard');
+            return redirect('employees');
         }else{
             return redirect('admins')->withInput();
         }
@@ -67,7 +67,7 @@ class AdminController extends Controller
             'admin_status' => 2 // 1 is admin, 0 is employee
             
         ]);
-        return redirect('admin/dashboard');
+        return redirect('employees');
     }
 
     /**

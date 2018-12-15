@@ -1,10 +1,10 @@
 <ul class="sidebar navbar-nav">
-  <li class="nav-item {{ Request::is('admin/dashboard') ? 'active' : ''}}">
+  <!-- <li class="nav-item {{ Request::is('admin/dashboard') ? 'active' : ''}}">
     <a class="nav-link" href="{{ url('admin/dashboard') }}">
       <i class="fas fa-fw fa-tachometer-alt"></i>
       <span>Dashboard</span>
     </a>
-  </li>
+  </li> -->
   <li class="nav-item {{ Request::is('employees') ? 'active' : ''}}">
     <a class="nav-link" href="{{ url('employees') }}">
       <i class="fa fa-tasks"></i>
@@ -19,7 +19,7 @@
   </li>
   <li class="nav-item {{ Request::is('categories') ? 'active' : ''}}">
     <a class="nav-link" href="{{ url('categories') }}">
-      <i class="fa fa-tasks"></i>
+      <i class="fas fa-fw fa-table"></i>
       <span>Categories</span>
     </a>
   </li>
@@ -29,7 +29,7 @@
       <span>Product</span>
     </a>
   </li>
-  <li class="nav-item dropdown">
+  <!-- <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-fw fa-folder"></i>
       <span>Pages</span>
@@ -54,5 +54,5 @@
     <a class="nav-link" href="tables.html">
       <i class="fas fa-fw fa-table"></i>
       <span>Tables</span></a>
-  </li>
+  </li> -->
 </ul>
