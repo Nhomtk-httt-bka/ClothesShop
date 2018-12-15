@@ -8,13 +8,13 @@
   <li class="nav-item {{ Request::is('employees') ? 'active' : ''}}">
     <a class="nav-link" href="{{ url('employees') }}">
       <i class="fa fa-tasks"></i>
-      <span>Người bán hàng</span>
+      <span>Employees</span>
     </a>
   </li>
    <li class="nav-item {{ Request::is('users') ? 'active' : ''}}">
     <a class="nav-link" href="{{ url('users') }}">
       <i class="fa fa-tasks"></i>
-      <span>Người dùng</span>
+      <span>Users</span>
     </a>
   </li>
   <li class="nav-item {{ Request::is('categories') ? 'active' : ''}}">
