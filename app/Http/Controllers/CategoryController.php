@@ -37,12 +37,25 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create([
+        // get object category follow Name and Url
+        $category_name = $request->category_name;
+        $category_url = $request->category_url;
+        $categoryByName = Category::where('category_name',$category_name)->first();
+        $categoryByUrl = Category::where('category_url',$category_url)->first();
+
+        // Check whether category_name, category_url existed ?
+        if(!is_null($categoryByName)) {
+            return Redirect::back()->with('error', '* Category name arleady existed');
+        } else if (!is_null($categoryByUrl)) {
+            return Redirect::back()->with('error', '* Category url arleady existed');
+        } else {
+            Category::create([
             'category_name' => $request->category_name,
             'category_description' => $request->category_description,
             'category_url' => $request->category_url,
         ]);
-        return redirect('categories');
+        return redirect('categories')->with('success', 'Category created successfully');
+        }
     }
 
     /**
@@ -79,14 +92,35 @@ class CategoryController extends Controller
     {
 
         $category = Category::find($id);
+        $category_name_old = $category->category_name;
+        $category_url_old = $category->category_url;
         
+        // get object category follow Name and Url
+        $category_name = $request->category_name;
+        $category_url = $request->category_url;
+        $categoryByName = Category::where('category_name',$category_name)->first();
+        $categoryByUrl = Category::where('category_url',$category_url)->first();
+
+        // Check whether category_name, category_url existed ?
+        if($category_name_old != $category_name) {
+            if(!is_null($categoryByName)) {
+                return Redirect::back()->with('error', '* Category name arleady existed');
+            }
+        }
+        if ($category_url_old != $category_url ){
+            if(!is_null($categoryByUrl)) {
+                return Redirect::back()->with('error', '* Category url arleady existed');
+            }
+        }
+        
+        // update Category
         $category->category_name = $request->category_name;
         $category->category_description = $request->category_description;
         $category->category_url = $request->category_url;
-        
+
         $category->save();
-        
-        return redirect('categories');
+
+        return redirect('categories')->with('success', 'Category updated successfully.');
     }
 
     /**
