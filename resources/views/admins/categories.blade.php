@@ -14,6 +14,12 @@
           <strong><p style="color: red">{{ $message }}</p></strong>
         </div>
       @endif
+      @if ($message = Session::get('notadmin'))
+        <div class="alert alert-success alert-block">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong><p style="color: red">{{ $message }}</p></strong>
+        </div>
+      @endif
       <div class="card-header">Form create Category</div>
       <form action="{{ url('categories') }}" method="post"> 
         @csrf

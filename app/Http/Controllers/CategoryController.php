@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
 {
@@ -54,6 +56,8 @@ class CategoryController extends Controller
             'category_description' => $request->category_description,
             'category_url' => $request->category_url,
         ]);
+        if(Session::get('position') == 1)
+            return redirect('categories')->with('notadmin', 'Only admin can add new category!');
         return redirect('categories')->with('success', 'Category created successfully');
         }
     }
@@ -78,6 +82,8 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::find($id);
+        if(Session::get('position') == 1)
+            return redirect('categories')->with('notadmin', 'Only admin can modify category infomation !');
         return view('admins.category_update',['category' => $category]);
     }
 
@@ -131,6 +137,8 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        if(Session::get('position') == 1)
+            return redirect('categories')->with('notadmin', 'Only admin can lock or unlock a category !');
 
         $category = Category::find($id);
         if($request->status == 0){

@@ -11,6 +11,7 @@ use App\models\Comments;
 use App\models\Order_histories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -69,6 +70,8 @@ class ProductController extends Controller
                     'product_image' => $imageName,
                     
                 ]);
+                if(Session::get('position') == 1)
+                    return redirect('products')->with('notadmin', 'Only admin can add new product!');
                 return redirect('products')->with('success', 'Product created successfully.');
             }
             return Redirect::back()->withErrors(['image', 'The image null or wrong type']);
@@ -94,10 +97,12 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        if(Session::get('position') == 1)
+                return redirect('products')->with('notadmin', 'Only admin can update product infomation !');
         $product = Products::find($id);
         $categoryId = $product->category_id;
         $categories = Category::all('id','category_name');
-
+        
         return view('admins.product_update',['product' => $product, 'categoryId' => $categoryId, 'categories' => $categories]);
     }
 
@@ -110,6 +115,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $product = Products::find($id);
         $product_name_old = $product->product_name;
 
@@ -168,6 +174,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        if(Session::get('position') == 1)
+            return redirect('products')->with('notadmin', 'Only admin can delete product!');
         // get all record table orders where products.id = orders.product_id
         $orders = Orders::where('product_id',$id)->get();
 
