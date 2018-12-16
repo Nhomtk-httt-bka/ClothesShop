@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -25,8 +24,6 @@ class AdminController extends Controller
             'password'=>$request->password,
         ];
         if(Auth::guard('admin')->attempt($credential)){
-            Session::put('position', Admin::where('admin_email', $request->email)->first()->admin_status);
-            
             return redirect('admin/dashboard');
         }else{
             return redirect('admins')->withInput();
@@ -67,7 +64,7 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'admin_phone' => $request->admin_phone,
             'admin_email' => $request->admin_email,
-            'admin_status' => 2 
+            'admin_status' => 2 // 1 is admin, 0 is employee
             
         ]);
         return redirect('admin/dashboard');
