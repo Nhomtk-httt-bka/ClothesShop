@@ -42,12 +42,9 @@ class CategoryController extends Controller
             'category_description' => $request->category_description,
             'category_url' => $request->category_url,
         ]);
-<<<<<<< HEAD
+
         return redirect('categories');
-=======
-        return redirect('categories')->with('success', 'Category created successfully');
-        }
->>>>>>> parent of da78f81... phân quyền trong quản lý sản phẩm, danh mục
+
     }
 
     /**
