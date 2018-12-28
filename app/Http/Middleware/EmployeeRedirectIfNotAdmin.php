@@ -5,25 +5,24 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfAuthenticated
+class EmployeeRedirectIfNotAdmin
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
         if (Auth::guard('admin')->check()) {
-            if(Auth::guard('admin')->user()->admin_status == 0){
-                return redirect('admins')->withErrors(['This account was blocked, please contact admin to support']);
+            if(Auth::guard('admin')->user()->admin_status == 2){
+                return $next($request);    
+            }else if(Auth::guard('admin')->user()->admin_status == 1){
+                return redirect('transactions');
             }
-            return $next($request);
         }
-
         return redirect('admins');
     }
 }

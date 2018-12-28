@@ -18,11 +18,9 @@ Route::get('/', function () {
  // Admin
 Route::resource('admins', 'AdminController');
 Route::prefix('admin')->group(function(){
-	Route::middleware('admin_auth')->group(function(){
-		Route::get('dashboard', 'AdminController@showDashboard');
-		
-
-	});
+	// Route::middleware('admin_auth')->group(function(){
+	// 	Route::get('dashboard', 'AdminController@showDashboard');
+	// });
 	Route::post('login','AdminController@checkAuth');
 	
 	Route::get('logout',function(){
@@ -32,15 +30,6 @@ Route::prefix('admin')->group(function(){
 
 	
 });
-
-
-
-
-Route::get('employees/block/{id}', 'EmployeeController@blockEmployee');
-Route::get('employees/unblock/{id}', 'EmployeeController@unblockEmployee');
-Route::get('users/block/{id}', 'UserController@blockUser');
-Route::get('users/unblock/{id}', 'UserController@unblockUser');
-Route::get('users/details/{id}','UserController@getDetail');
 
 
 // Home site user
@@ -78,10 +67,23 @@ Route::middleware('user_auth')->group(function(){
 
 // Redirect to login if admin not authen
 Route::middleware('admin_auth')->group(function(){
-	Route::resource('categories','CategoryController');
-	Route::resource('products','ProductController');
-	Route::resource('employees','EmployeeController');
-	Route::get('users', 'UserController@index');
+	Route::resource('transactions','TransactionController');
+	Route::resource('orders','OrderController');
+
+	Route::middleware('is_Admin')->group(function(){
+		Route::resource('categories','CategoryController');
+		Route::resource('products','ProductController');
+		Route::resource('employees','EmployeeController');
+		Route::get('users', 'UserController@index');
+
+		Route::get('employees/block/{id}', 'EmployeeController@blockEmployee');
+		Route::get('employees/unblock/{id}', 'EmployeeController@unblockEmployee');
+		Route::get('users/block/{id}', 'UserController@blockUser');
+		Route::get('users/unblock/{id}', 'UserController@unblockUser');
+		Route::get('users/details/{id}','UserController@getDetail');
+	});
+	
+
 });
 
 
@@ -89,7 +91,6 @@ Route::middleware('admin_auth')->group(function(){
 Route::resource('carts','CartController');
 Route::post('rmProduct','CartController@rmProduct');
 Route::post('chageQuatyProduct','CartController@chageQuatyProduct');
-
 
 
 // Test

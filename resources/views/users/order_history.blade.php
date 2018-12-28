@@ -167,29 +167,23 @@
     </div><!--/row-->
 	<br>
 	<br>
+	
 	<script type="text/javascript" src="{{ asset('js/jquery.validate.js') }}"></script>
     <script type="text/javascript">
       
       jQuery().ready(function() {
 
         // validate form on keyup and submit
-        var v = jQuery("#changePass").validate({
+        var v = jQuery("#_for{{ $order->id }}").validate({
           rules: {
             
-            new_password: {
-              required: true,
-              minlength: 6,
-              maxlength: 15,
-            },
-            new_confirm: {
-              required: true,
-              minlength: 6,
-              equalTo: "#new_password",
+            rating: {
+              required: true
             }
 
           },
-          errorElement: "span",
-          errorClass: "help-inline-error",
+          errorElement: "div",
+          errorClass: "text-center alert alert-danger",
         });
 
        
