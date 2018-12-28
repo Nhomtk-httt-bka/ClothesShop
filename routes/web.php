@@ -32,10 +32,6 @@ Route::prefix('admin')->group(function(){
 });
 
 
-
-
-
-
 // Home site user
 Route::resource('home','HomeController');
 Route::get('product/{id}','HomeController@showProduct');
@@ -71,17 +67,22 @@ Route::middleware('user_auth')->group(function(){
 
 // Redirect to login if admin not authen
 Route::middleware('admin_auth')->group(function(){
-	Route::resource('categories','CategoryController');
-	Route::resource('products','ProductController');
-	Route::resource('employees','EmployeeController');
-	Route::get('users', 'UserController@index');
+	Route::resource('transactions','TransactionController');
+	Route::resource('orders','OrderController');
 
+	Route::middleware('is_Admin')->group(function(){
+		Route::resource('categories','CategoryController');
+		Route::resource('products','ProductController');
+		Route::resource('employees','EmployeeController');
+		Route::get('users', 'UserController@index');
 
-	Route::get('employees/block/{id}', 'EmployeeController@blockEmployee');
-	Route::get('employees/unblock/{id}', 'EmployeeController@unblockEmployee');
-	Route::get('users/block/{id}', 'UserController@blockUser');
-	Route::get('users/unblock/{id}', 'UserController@unblockUser');
-	Route::get('users/details/{id}','UserController@getDetail');
+		Route::get('employees/block/{id}', 'EmployeeController@blockEmployee');
+		Route::get('employees/unblock/{id}', 'EmployeeController@unblockEmployee');
+		Route::get('users/block/{id}', 'UserController@blockUser');
+		Route::get('users/unblock/{id}', 'UserController@unblockUser');
+		Route::get('users/details/{id}','UserController@getDetail');
+	});
+	
 
 });
 
@@ -90,7 +91,6 @@ Route::middleware('admin_auth')->group(function(){
 Route::resource('carts','CartController');
 Route::post('rmProduct','CartController@rmProduct');
 Route::post('chageQuatyProduct','CartController@chageQuatyProduct');
-
 
 
 // Test

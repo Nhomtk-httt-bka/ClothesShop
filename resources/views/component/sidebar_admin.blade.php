@@ -5,28 +5,36 @@
       <span>Dashboard</span>
     </a>
   </li> -->
-  <li class="nav-item {{ Request::is('employees') ? 'active' : ''}}">
-    <a class="nav-link" href="{{ url('employees') }}">
-      <i class="fa fa-tasks"></i>
-      <span>Employees</span>
-    </a>
-  </li>
-   <li class="nav-item {{ Request::is('users') ? 'active' : ''}}">
-    <a class="nav-link" href="{{ url('users') }}">
-      <i class="fa fa-tasks"></i>
-      <span>Users</span>
-    </a>
-  </li>
-  <li class="nav-item {{ Request::is('categories') ? 'active' : ''}}">
-    <a class="nav-link" href="{{ url('categories') }}">
-      <i class="fas fa-fw fa-table"></i>
-      <span>Categories</span>
-    </a>
-  </li>
-  <li class="nav-item {{ Request::is('products') ? 'active' : ''}}">
-    <a class="nav-link" href="{{ url('products') }}">
-      <i class="fas fa-book"></i>
-      <span>Product</span>
+  @if( Auth::guard('admin')->user()->admin_status == 2 )
+    <li class="nav-item {{ Request::is('employees') ? 'active' : ''}}">
+      <a class="nav-link" href="{{ url('employees') }}">
+        <i class="fa fa-tasks"></i>
+        <span>Employees</span>
+      </a>
+    </li>
+     <li class="nav-item {{ Request::is('users') ? 'active' : ''}}">
+      <a class="nav-link" href="{{ url('users') }}">
+        <i class="fa fa-tasks"></i>
+        <span>Users</span>
+      </a>
+    </li>
+    <li class="nav-item {{ Request::is('categories') ? 'active' : ''}}">
+      <a class="nav-link" href="{{ url('categories') }}">
+        <i class="fas fa-fw fa-table"></i>
+        <span>Categories</span>
+      </a>
+    </li>
+    <li class="nav-item {{ Request::is('products') ? 'active' : ''}}">
+      <a class="nav-link" href="{{ url('products') }}">
+        <i class="fas fa-book"></i>
+        <span>Products</span>
+      </a>
+    </li>
+  @endif
+  <li class="nav-item {{ Request::is('transactions') ? 'active' : ''}}">
+    <a class="nav-link" href="{{ url('transactions') }}">
+      <i class="fa fa-shopping-cart"></i>
+      <span>Transactions</span>
     </a>
   </li>
   <!-- <li class="nav-item dropdown">

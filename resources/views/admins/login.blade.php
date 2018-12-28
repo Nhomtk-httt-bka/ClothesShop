@@ -3,6 +3,12 @@
   <div class="card card-login mx-auto mt-5">
     <div class="card-header">Login Admin</div>
     <div class="card-body">
+      @if($errors->any())
+        <div class="alert alert-danger alert-block">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>{{$errors->first()}}</strong>
+        </div>
+      @endif
       <form action="{{ url('admin/login') }}" method="post">
         @csrf
         <div class="form-group">

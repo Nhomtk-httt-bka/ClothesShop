@@ -24,6 +24,11 @@ class AdminController extends Controller
             'password'=>$request->password,
         ];
         if(Auth::guard('admin')->attempt($credential)){
+            if(Auth::guard('admin')->user()->admin_status == 0){
+                Auth::guard('admin')->logout();
+                $request->session()->flush();
+                return redirect('admins')->withErrors(['This account was blocked, please contact admin to support'])->withInput();
+            }
             return redirect('employees');
         }else{
             return redirect('admins')->withInput();

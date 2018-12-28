@@ -16,7 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->float('total_money',8,2);
+            $table->float('total_money');
             $table->tinyInteger('status');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
